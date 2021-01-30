@@ -53,7 +53,8 @@ pokemon_list = """
     Raichu
     Sandshrew
     Sandslash
-    Nidoran
+    Nidoran ♂
+    Nidoran ♀
     Nidorina
     Nidoqueen
     Nidorino
@@ -946,8 +947,13 @@ pokemon_list = """
     Alolan Marowak"""
 split = pokemon_list.split('\n')
 pokemon_string = ""
-for i in range(0,len(split)):
-    pokemon_string += split[i].strip() +'\n'
+for i in range(1,len(split)):
+    if i == 1:
+        pokemon_string += '\n'+split[i].strip() + '\n'
+    elif i != len(split)-1:
+        pokemon_string += split[i].strip() +'\n'
+    else:
+        pokemon_string += split[i].strip()
 
 def solve(message):
     
