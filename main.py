@@ -1022,7 +1022,7 @@ async def on_message(message):
                         #try all possible solutions - fix for short name pokemon by brute force
                         for i in range(0,len(solution)):
                             post(text_channel, data = {'content': 'p!c '+ solution[i].strip()}, headers = header)
-                            sleep(2)
+                            sleep(3)
                 
                     elif is_correct:
                         now = datetime.now()
