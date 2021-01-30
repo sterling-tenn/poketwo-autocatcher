@@ -4,7 +4,7 @@ from discord.ext import tasks
 from re import findall
 from time import sleep
 
-print('Version 1.3 || By: bone')
+print('Version 1.4 || By: bone')
 print('===================================================================')
 
 informationFile = open("information.txt","r")
@@ -24,7 +24,8 @@ bot_token = data[2]
 poketwo_id = 716390085896962058
 loopBool = True
 
-pokemon_list = """    Bulbasaur
+pokemon_list = """
+    Bulbasaur
     Ivysaur
     Venusaur
     Charmander
