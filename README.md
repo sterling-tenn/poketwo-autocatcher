@@ -6,30 +6,30 @@ Keep the main exe file and the information.txt in the same folder
 
 SETUP:
 
-Channel ID: 
-  Enable discord developer mode 
-  Right click the channel where you want to catch pokemon and click copy ID
-  Paste the ID in the Channel ID section in the information.txt file
+Channel ID: <br />
+  Enable discord developer mode <br />
+  Right click the channel where you want to catch pokemon and click copy ID<br />
+  Paste the ID in the Channel ID section in the information.txt file<br />
 
-Authorization:
-  Open any place in discord where you can send a message
-  Press CTRL + SHIFT + I to open up the inspect panel.
-  Navigate to the "Network" tab at the top
-  Send any message into discord
-  Click on the "message" item that appears
-  Navigate to the tab "Headers" that shows up after clicking "message"
-  Look for "authorization: <some string of characters here>" under the "Request Headers" tab
-  Copy the string of characters and paste it into the Authorization section in the information.txt file
+Authorization: <br />
+  Open any place in discord where you can send a message <br />
+  Press CTRL + SHIFT + I to open up the inspect panel. <br />
+  Navigate to the "Network" tab at the top <br />
+  Send any message into discord <br />
+  Click on the "message" item that appears <br />
+  Navigate to the tab "Headers" that shows up after clicking "message" <br />
+  Look for "authorization: <some string of characters here>" under the "Request Headers" tab <br />
+  Copy the string of characters and paste it into the Authorization section in the information.txt file <br />
  
-Bot Token:
-  Go to https://discord.com/developers
-  Create a new application and name it whatever you want (This will be the name of your bot)
-  Navigate to the "Bot" section of the application and create a new bot
-  Copy the token and paste it into the information.txt file
+Bot Token: <br />
+  Go to https://discord.com/developers <br />
+  Create a new application and name it whatever you want (This will be the name of your bot) <br />
+  Navigate to the "Bot" section of the application and create a new bot <br />
+  Copy the token and paste it into the information.txt file <br />
   
- Go to the "OAuth2" section of the application
- Select the "Bot" checkbox in the "Scopes" section
- Copy the url that is generated
- Use this URL to invite your bot to your server
+ Go to the "OAuth2" section of the application <br />
+ Select the "Bot" checkbox in the "Scopes" section <br />
+ Copy the url that is generated <br />
+ Use this URL to invite your bot to your server <br />
  
 Invite poketwo in your server as well and start the exe file.
