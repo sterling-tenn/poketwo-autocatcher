@@ -17,8 +17,8 @@ Authorization: <br />
   Press CTRL + SHIFT + I to open up the inspect panel. <br />
   Navigate to the "Network" tab at the top <br />
   Send any message into discord <br />
-  Click on the "message" item that appears <br />
-  Navigate to the tab "Headers" that shows up after clicking "message" <br />
+  Click on the "messages" item that appears <br />
+  Navigate to the tab "Headers" that shows up after clicking "messages" <br />
   Look for "authorization: <some string of characters here>" under the "Request Headers" tab <br />
   Copy the string of characters and paste it into the Authorization section in the information.txt file <br />
  
