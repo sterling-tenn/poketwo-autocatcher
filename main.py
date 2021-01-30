@@ -3,8 +3,9 @@ import discord
 from discord.ext import tasks
 from re import findall
 from time import sleep
+from datetime import datetime
 
-print('Version 1.4 || By: bone')
+print('Version 1.5 || By: bone')
 print('===================================================================')
 
 informationFile = open("information.txt","r")
@@ -1024,8 +1025,10 @@ async def on_message(message):
                             sleep(2)
                 
                     elif is_correct:
+                        now = datetime.now()
+                        current_time = now.strftime("%H:%M:%S")
                         split = message.content.split(">! ")
-                        print(split[1])
+                        print("[",current_time,"]",split[1])
                         loopBool = True
     except Exception:
         #post(text_channel, data = {'content':'p!h'}, headers = header)
