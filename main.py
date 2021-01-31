@@ -439,6 +439,8 @@ pokemon_list = """
     Bastiodon
     Burmy
     Wormadam
+    Sandy Wormadam
+    Trash Wormadam
     Mothim
     Combee
     Vespiquen
@@ -1015,15 +1017,24 @@ async def on_message(message):
 
                     #search if the message contains one of these phrases
                     is_hint = findall('The pokémon is ',message.content)
+                    is_wrong = findall('That is the wrong pokémon!',message.content)
                     is_correct = findall('Congratulations',message.content)
 
                     if is_hint:
                         solution = solve(message.content)
                         #try all possible solutions - fix for short name pokemon by brute force
                         for i in range(0,len(solution)):
-                            post(text_channel, data = {'content': 'p!c '+ solution[i].strip()}, headers = header)
-                            sleep(3)
-                
+                            #hardcode Nidoran since the hint uses the unicode symbols ♂ and ♀
+                            if solution[i].strip() == "Nidoran ♂" or solution[i].strip() == "Nidoran ♀":
+                                post(text_channel, data = {'content': 'p!c Nidoran'}, headers = header)
+                            #everything else
+                            else:
+                                post(text_channel, data = {'content': 'p!c '+ solution[i].strip()}, headers = header)
+                                sleep(3)
+
+                    elif is_wrong:
+                        post(text_channel, data = {'content':'p!h'}, headers = header)
+
                     elif is_correct:
                         now = datetime.now()
                         current_time = now.strftime("%H:%M:%S")
@@ -1031,7 +1042,6 @@ async def on_message(message):
                         print("[",current_time,"]",split[1])
                         loopBool = True
     except Exception:
-        #post(text_channel, data = {'content':'p!h'}, headers = header)
         pass
 
 #spams a "." every 3 seconds
@@ -1041,12 +1051,12 @@ async def loop():
         channel = client.get_channel(channel_id)
         post(text_channel, data = {'content':'.'}, headers = header)
 
-@client.event
-async def on_reaction_add(reaction, user):
-    #if p!h is on cooldown
-    if reaction.emoji == '⌛':
-        loopBool = False
-        sleep(10)
-        post(text_channel, data = {'content':'p!h'}, headers = header)
+#@client.event
+#async def on_reaction_add(reaction, user):
+#    #if p!h is on cooldown
+#    if reaction.emoji == '⌛':
+#        loopBool = False
+#        sleep(5)
+#        post(text_channel, data = {'content':'p!h'}, headers = header)
         
 client.run(bot_token)
