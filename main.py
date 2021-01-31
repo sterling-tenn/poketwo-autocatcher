@@ -1051,12 +1051,12 @@ async def loop():
         channel = client.get_channel(channel_id)
         post(text_channel, data = {'content':'.'}, headers = header)
 
-#@client.event
-#async def on_reaction_add(reaction, user):
-#    #if p!h is on cooldown
-#    if reaction.emoji == '⌛':
-#        loopBool = False
-#        sleep(5)
-#        post(text_channel, data = {'content':'p!h'}, headers = header)
+@client.event
+async def on_reaction_add(reaction, user):
+    #if p!h is on cooldown
+    if reaction.emoji == '⌛':
+        loopBool = False
+        sleep(10)
+        post(text_channel, data = {'content':'p!h'}, headers = header)
         
 client.run(bot_token)
