@@ -4,18 +4,46 @@ from discord.ext import tasks
 from re import findall
 from time import sleep
 from datetime import datetime
+import ctypes
 
-print('Version 1.5 || By: bone')
-print('===================================================================')
 
+#Function Declarations
+def solve(message):
+    
+    hint = []
+
+    for i in range(15,len(message) - 1):
+        if message[i] != "\\":
+            hint.append(message[i])
+
+    hint_string = ""
+    for i in hint:
+        hint_string += i
+        
+    hint_replaced = hint_string.replace("_",".")
+
+    solution = findall('\n'+hint_replaced+'\n',pokemon_string)
+
+    return solution
+
+def printLog(string):
+    now = datetime.now()
+    current_time = now.strftime("%H:%M:%S")
+    print("[",current_time,"]",string)
+
+def updateTitle():
+    ctypes.windll.kernel32.SetConsoleTitleW("Poketwo Auto-Catcher || Pokemon Caught: " + str(num_pokemon)+" || Shinies: "+str(num_shinies))
+
+
+#Variable Declarations
 informationFile = open("information.txt","r")
 data = []
 for line in informationFile:
     split = line.split(":")
     data.append(split[1].strip())
-#data[0] is the channel id
-#data[1] is the header authorization token
-#data[2] is the bot token
+    #data[0] is the channel id
+    #data[1] is the header authorization token
+    #data[2] is the bot token
 informationFile.close()
 
 channel_id = int(data[0])
@@ -23,7 +51,6 @@ text_channel = 'https://discord.com/api/v8/channels/'+str(channel_id)+'/messages
 header = {'authorization': data[1]}
 bot_token = data[2]
 poketwo_id = 716390085896962058
-loopBool = True
 
 pokemon_list = """
     Bulbasaur
@@ -377,6 +404,9 @@ pokemon_list = """
     Feebas
     Milotic
     Castform
+    Sunny Castform
+    Rainy Castform
+    Snowy Castform
     Kecleon
     Shuppet
     Banette
@@ -412,6 +442,9 @@ pokemon_list = """
     Rayquaza
     Jirachi
     Deoxys
+    Attack Deoxys
+    Defense Deoxys
+    Speed Deoxys
     Turtwig
     Grotle
     Torterra
@@ -958,26 +991,16 @@ for i in range(1,len(split)):
     else:
         pokemon_string += split[i].strip()
 
-def solve(message):
-    
-    hint = []
+num_pokemon = 0
+num_shinies = 0
 
-    for i in range(15,len(message) - 1):
-        if message[i] != "\\":
-            hint.append(message[i])
 
-    hint_string = ""
-    for i in hint:
-        hint_string += i
-        
-    hint_replaced = hint_string.replace("_",".")
-
-    solution = findall('\n'+hint_replaced+'\n',pokemon_string)
-
-    return solution
+#Code
+updateTitle()
+print('                   Version 1.6 || By: bone')
+print('===================================================================')
 
 client = discord.Client()
-
 @client.event
 async def on_ready():
     print('Connection to bot "{0.user}" established. Starting auto-catcher.'.format(client))
@@ -993,10 +1016,10 @@ async def on_message(message):
         if message.channel.id == channel_id:
             #if poketwo sends a message
             if  message.author.id == poketwo_id:
+                loop.stop()
+                
                 #if embedded image
                 if message.embeds:
-                    loopBool = False
-
                     #check if the embedded image is a wild pokemon appearance
                     embed_message = []
                     for embed in message.embeds:
@@ -1008,21 +1031,26 @@ async def on_message(message):
                     #if the embedded image is a wild pokemon
                     if wild_pokemon_found or wild_pokemon_fled:
                         post(text_channel, data = {'content':'p!h'}, headers = header)
+                        if wild_pokemon_fled:
+                            printLog(" A pokemon has fled.")
                     else:
-                        loopBool = True
+                        loop.start()
 
                 #if normal text
                 else:
-                    loopBool = False
-
                     #search if the message contains one of these phrases
                     is_hint = findall('The pokémon is ',message.content)
-                    is_wrong = findall('That is the wrong pokémon!',message.content)
                     is_correct = findall('Congratulations',message.content)
+                    is_shiny = findall('These colors seem unusual...',message.content)
 
                     if is_hint:
                         solution = solve(message.content)
                         #try all possible solutions - fix for short name pokemon by brute force
+
+                        if len(solution) == 0:
+                            print("Pokemon could not be found in the database.")
+                            loop.start()
+
                         for i in range(0,len(solution)):
                             #hardcode Nidoran since the hint uses the unicode symbols ♂ and ♀
                             if solution[i].strip() == "Nidoran ♂" or solution[i].strip() == "Nidoran ♀":
@@ -1032,30 +1060,30 @@ async def on_message(message):
                                 post(text_channel, data = {'content': 'p!c '+ solution[i].strip()}, headers = header)
                                 sleep(3)
 
-                    elif is_wrong:
-                        post(text_channel, data = {'content':'p!h'}, headers = header)
-
                     elif is_correct:
-                        now = datetime.now()
-                        current_time = now.strftime("%H:%M:%S")
+                        global num_pokemon
+                        num_pokemon += 1
+                        if is_shiny:
+                            global num_shinies
+                            num_shinies += 1
+                        updateTitle()
                         split = message.content.split(">! ")
-                        print("[",current_time,"]",split[1])
-                        loopBool = True
+                        printLog(split[1])
+                        loop.start()
     except Exception:
         pass
 
-#spams a "." every 3 seconds
-@tasks.loop(seconds=3)
+#spams a "." every 2 seconds
+@tasks.loop(seconds=2)
 async def loop():
-    if loopBool:
-        channel = client.get_channel(channel_id)
-        post(text_channel, data = {'content':'.'}, headers = header)
+    channel = client.get_channel(channel_id)
+    post(text_channel, data = {'content':'.'}, headers = header)
 
 @client.event
 async def on_reaction_add(reaction, user):
     #if p!h is on cooldown
     if reaction.emoji == '⌛':
-        loopBool = False
+        loop.stop()
         sleep(10)
         post(text_channel, data = {'content':'p!h'}, headers = header)
         
