@@ -1012,7 +1012,7 @@ async def on_message(message):
         if message.channel.id == channel_id:
             #if poketwo sends a message
             if  message.author.id == poketwo_id:
-                loop.stop()
+                loop.cancel()
                     
                 #if embedded image
                 if message.embeds:
@@ -1083,7 +1083,7 @@ async def loop():
 async def on_reaction_add(reaction, user):
     #if p!h is on cooldown
     if reaction.emoji == '⌛':
-        loop.stop()
+        loop.cancel()
         sleep(10)
         post(text_channel, data = {'content':'p!h'}, headers = header)
         
