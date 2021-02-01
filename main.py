@@ -1070,6 +1070,7 @@ async def on_message(message):
                         printLog(split[1])
                         loop.start()
     except Exception:
+        loop.start()
         pass
 
 #spams a "." every 1.5 seconds
