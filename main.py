@@ -993,7 +993,7 @@ num_fled = 0
 
 #Code
 updateTitle()
-print('                   Version 1.6.2 || By: bone')
+print('                   Version 1.6.1 || By: bone')
 print('===================================================================')
 
 client = discord.Client()
@@ -1057,8 +1057,7 @@ async def on_message(message):
                             #everything else
                             else:
                                 post(text_channel, data = {'content': 'p!c '+ solution[i].strip()}, headers = header)
-                                if len(solution) > 0:
-                                    sleep(3)
+                                sleep(3)
 
                     elif is_correct:
                         global num_pokemon
@@ -1077,7 +1076,7 @@ async def on_message(message):
 #spams a "." every 1.5 seconds
 @tasks.loop(seconds=1.5)
 async def loop():
-    post(text_channel, data = {'content':'v1.6.2'}, headers = header)
+    post(text_channel, data = {'content':'v1.6.1'}, headers = header)
 
 @client.event
 async def on_reaction_add(reaction, user):
