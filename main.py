@@ -1012,7 +1012,7 @@ async def on_message(message):
         if message.channel.id == channel_id:
             #if poketwo sends a message
             if  message.author.id == poketwo_id:
-                loop.cancel()
+                loop.stop()
                     
                 #if embedded image
                 if message.embeds:
@@ -1070,20 +1070,19 @@ async def on_message(message):
                         printLog(split[1])
                         loop.start()
     except Exception:
-        loop.start()
+        loop.restart()
         pass
 
 #spams a "." every 1.5 seconds
 @tasks.loop(seconds=1.5)
 async def loop():
-    channel = client.get_channel(channel_id)
     post(text_channel, data = {'content':'v1.6'}, headers = header)
 
 @client.event
 async def on_reaction_add(reaction, user):
     #if p!h is on cooldown
     if reaction.emoji == '⌛':
-        loop.cancel()
+        loop.stop()
         sleep(10)
         post(text_channel, data = {'content':'p!h'}, headers = header)
         
