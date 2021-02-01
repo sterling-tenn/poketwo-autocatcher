@@ -33,7 +33,7 @@ def printLog(string):
     print("[",current_time,"]",string)
 
 def updateTitle():
-    ctypes.windll.kernel32.SetConsoleTitleW("Poketwo Auto-Catcher || Pokemon Caught: " + str(num_pokemon)+" || Shinies: "+str(num_shinies)+" || Fled: "+str(num_fled))
+    ctypes.windll.kernel32.SetConsoleTitleW("Poketwo Auto-Catcher || Pokemon Caught: " + str(num_pokemon)+" || Shinies: "+str(num_shinies)+" || Legendaries: "+str(num_legendaries)+" || Mythics: "+str(num_mythics)+" || Fled: "+str(num_fled))
 
 
 #Variable Declarations
@@ -986,14 +986,40 @@ Alolan Muk
 Alolan Exeggutor
 Alolan Marowak"""
 
+legendary_list = """Mewtwo
+Rayquaza
+Necrozma
+Yveltal
+Xerneas
+Dialga
+Palkia
+Giratina
+Zekrom
+Reshiram
+Cosmog
+Cosmoem
+Solgaleo
+Lunala
+Kyurem
+Groudon
+Kyogre"""
+
+mythic_list = """Diancie
+Darkrai
+Arceus
+Mew
+Zeraora"""
+
 num_pokemon = 0
 num_shinies = 0
 num_fled = 0
+num_legendaries = 0
+num_mythics = 0
 
 
 #Code
 updateTitle()
-print('                   Version 1.6.1 || By: bone')
+print('                   Version 1.7 || By: bone')
 print('===================================================================')
 
 client = discord.Client()
@@ -1044,39 +1070,56 @@ async def on_message(message):
 
                     if is_hint:
                         solution = solve(message.content)
-                        #try all possible solutions - fix for short name pokemon by brute force
 
                         if len(solution) == 0:
-                            print("Pokemon could not be found in the database.")
+                            printLog("Pokemon could not be found in the database.")
                             loop.start()
-
+                        #try all possible solutions - fix for short name pokemon by brute force
                         for i in range(0,len(solution)):
                             #hardcode Nidoran since the hint uses the unicode symbols ♂ and ♀
-                            if solution[i].strip() == "Nidoran ♂" or solution[i].strip() == "Nidoran ♀":
+                            if solution[i] == "Nidoran ♂" or solution[i] == "Nidoran ♀":
                                 post(text_channel, data = {'content': 'p!c Nidoran'}, headers = header)
                             #everything else
                             else:
-                                post(text_channel, data = {'content': 'p!c '+ solution[i].strip()}, headers = header)
-                                sleep(3)
+                                post(text_channel, data = {'content': 'p!c '+ solution[i]}, headers = header)
+                                if len(solution) > 1:
+                                    sleep(3)
 
                     elif is_correct:
                         global num_pokemon
                         num_pokemon += 1
+                        
                         if is_shiny:
                             global num_shinies
                             num_shinies += 1
+                        
+                        split = message.content.split(" ")
+                        
+                        msg = ""
+                        for i in range (2,len(split)):
+                            msg += split[i] + " "
+
+                        printLog(msg)
+                        
+                        pokemon = split[7].replace("!","")
+
+                        if findall(pokemon,legendary_list,MULTILINE):
+                            global num_legendaries
+                            num_legendaries += 1
+
+                        if findall(pokemon,mythic_list,MULTILINE):
+                            global num_mythics
+                            num_mythics += 1
+                        
                         updateTitle()
-                        split = message.content.split(">! ")
-                        printLog(split[1])
                         loop.start()
     except Exception:
         loop.restart()
         pass
 
-#spams a "." every 1.5 seconds
 @tasks.loop(seconds=1.5)
 async def loop():
-    post(text_channel, data = {'content':'v1.6.1'}, headers = header)
+    post(text_channel, data = {'content':'v1.7'}, headers = header)
 
 @client.event
 async def on_reaction_add(reaction, user):
