@@ -1007,67 +1007,70 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    #only care about messages in the specified channel
-    if message.channel.id == channel_id:
-        #if poketwo sends a message
-        if  message.author.id == poketwo_id:
-            loop.stop()
-                
-            #if embedded image
-            if message.embeds:
-                #check if the embedded image is a wild pokemon appearance
-                embed_message = []
-                for embed in message.embeds:
-                    embed_message.append(embed.to_dict())
+    try:
+        #only care about messages in the specified channel
+        if message.channel.id == channel_id:
+            #if poketwo sends a message
+            if  message.author.id == poketwo_id:
+                loop.stop()
+                    
+                #if embedded image
+                if message.embeds:
+                    #check if the embedded image is a wild pokemon appearance
+                    embed_message = []
+                    for embed in message.embeds:
+                        embed_message.append(embed.to_dict())
 
-                wild_pokemon_found = findall('A wild pokémon has appeared!',str(embed_message))
-                wild_pokemon_fled = findall('A new wild pokémon has appeared!',str(embed_message))
+                    wild_pokemon_found = findall('A wild pokémon has appeared!',str(embed_message))
+                    wild_pokemon_fled = findall('A new wild pokémon has appeared!',str(embed_message))
 
-                #if the embedded image is a wild pokemon
-                if wild_pokemon_found or wild_pokemon_fled:
-                    post(text_channel, data = {'content':'p!h'}, headers = header)
-                    if wild_pokemon_fled:
-                        global num_fled
-                        num_fled += 1
-                        updateTitle()
-                        printLog(" A pokemon has fled.")
-                else:
-                    loop.start()
-
-            #if normal text
-            else:
-                #search if the message contains one of these phrases
-                is_hint = findall('The pokémon is ',message.content)
-                is_correct = findall('Congratulations',message.content)
-                is_shiny = findall('These colors seem unusual...',message.content)
-
-                if is_hint:
-                    solution = solve(message.content)
-                    #try all possible solutions - fix for short name pokemon by brute force
-
-                    if len(solution) == 0:
-                        print("Pokemon could not be found in the database.")
+                    #if the embedded image is a wild pokemon
+                    if wild_pokemon_found or wild_pokemon_fled:
+                        post(text_channel, data = {'content':'p!h'}, headers = header)
+                        if wild_pokemon_fled:
+                            global num_fled
+                            num_fled += 1
+                            updateTitle()
+                            printLog(" A pokemon has fled.")
+                    else:
                         loop.start()
 
-                    for i in range(0,len(solution)):
-                        #hardcode Nidoran since the hint uses the unicode symbols ♂ and ♀
-                        if solution[i].strip() == "Nidoran ♂" or solution[i].strip() == "Nidoran ♀":
-                            post(text_channel, data = {'content': 'p!c Nidoran'}, headers = header)
-                        #everything else
-                        else:
-                            post(text_channel, data = {'content': 'p!c '+ solution[i].strip()}, headers = header)
-                            sleep(3)
+                #if normal text
+                else:
+                    #search if the message contains one of these phrases
+                    is_hint = findall('The pokémon is ',message.content)
+                    is_correct = findall('Congratulations',message.content)
+                    is_shiny = findall('These colors seem unusual...',message.content)
 
-                elif is_correct:
-                    global num_pokemon
-                    num_pokemon += 1
-                    if is_shiny:
-                        global num_shinies
-                        num_shinies += 1
-                    updateTitle()
-                    split = message.content.split(">! ")
-                    printLog(split[1])
-                    loop.start()
+                    if is_hint:
+                        solution = solve(message.content)
+                        #try all possible solutions - fix for short name pokemon by brute force
+
+                        if len(solution) == 0:
+                            print("Pokemon could not be found in the database.")
+                            loop.start()
+
+                        for i in range(0,len(solution)):
+                            #hardcode Nidoran since the hint uses the unicode symbols ♂ and ♀
+                            if solution[i].strip() == "Nidoran ♂" or solution[i].strip() == "Nidoran ♀":
+                                post(text_channel, data = {'content': 'p!c Nidoran'}, headers = header)
+                            #everything else
+                            else:
+                                post(text_channel, data = {'content': 'p!c '+ solution[i].strip()}, headers = header)
+                                #sleep(3)
+
+                    elif is_correct:
+                        global num_pokemon
+                        num_pokemon += 1
+                        if is_shiny:
+                            global num_shinies
+                            num_shinies += 1
+                        updateTitle()
+                        split = message.content.split(">! ")
+                        printLog(split[1])
+                        loop.start()
+    except Exception:
+        pass
 
 #spams a "." every 1.5 seconds
 @tasks.loop(seconds=1.5)
