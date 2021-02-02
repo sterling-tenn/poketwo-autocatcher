@@ -1034,14 +1034,9 @@ async def on_ready():
 @client.event
 async def on_message(message):
     try:
-        #only care about messages in the specified channel
-        if message.channel.id == channel_id:
-            #if poketwo sends a message
-            if  message.author.id == poketwo_id:
-                loop.stop()
-                    
-                #if embedded image
-                if message.embeds:
+        if message.channel.id == channel_id:#only care about messages in the specified channel
+            if  message.author.id == poketwo_id:#if poketwo sends a message
+                if message.embeds:#if embedded image
                     #check if the embedded image is a wild pokemon appearance
                     embed_message = []
                     for embed in message.embeds:
@@ -1049,20 +1044,16 @@ async def on_message(message):
 
                     wild_pokemon_found = findall('A wild pokémon has appeared!',str(embed_message))
                     wild_pokemon_fled = findall('A new wild pokémon has appeared!',str(embed_message))
-
-                    #if the embedded image is a wild pokemon
-                    if wild_pokemon_found or wild_pokemon_fled:
+ 
+                    if wild_pokemon_found or wild_pokemon_fled:#if wild pokemon is found/previous wild pokemon fled 
                         post(text_channel, data = {'content':'p!h'}, headers = header)
                         if wild_pokemon_fled:
                             global num_fled
                             num_fled += 1
                             updateTitle()
                             printLog(" A pokemon has fled.")
-                    else:
-                        loop.start()
 
-                #if normal text
-                else:
+                else:#if normal text
                     #search if the message contains one of these phrases
                     is_hint = findall('The pokémon is ',message.content)
                     is_correct = findall('Congratulations',message.content)
@@ -1073,16 +1064,14 @@ async def on_message(message):
 
                         if len(solution) == 0:
                             printLog("Pokemon could not be found in the database.")
-                            loop.start()
+
                         #try all possible solutions - fix for short name pokemon by brute force
                         for i in range(0,len(solution)):
-                            #hardcode Nidoran since the hint uses the unicode symbols ♂ and ♀
-                            if solution[i] == "Nidoran ♂" or solution[i] == "Nidoran ♀":
+                            if solution[i] == "Nidoran ♂" or solution[i] == "Nidoran ♀":#hardcode Nidoran since the hint uses the unicode symbols ♂ and ♀
                                 post(text_channel, data = {'content': 'p!c Nidoran'}, headers = header)
-                            #everything else
-                            else:
+                            else: #everything else
                                 post(text_channel, data = {'content': 'p!c '+ solution[i]}, headers = header)
-                                if len(solution) > 1:
+                                if len(solution) > 1:#if there can be multiple solutions based on the hint, delay to prevent messages not being sent
                                     sleep(3)
 
                     elif is_correct:
@@ -1112,7 +1101,6 @@ async def on_message(message):
                             num_mythics += 1
                         
                         updateTitle()
-                        loop.start()
     except Exception:
         loop.restart()
         pass
@@ -1123,9 +1111,7 @@ async def loop():
 
 @client.event
 async def on_reaction_add(reaction, user):
-    #if p!h is on cooldown
-    if reaction.emoji == '⌛':
-        loop.stop()
+    if reaction.emoji == '⌛':#if p!h is on cooldown
         sleep(10)
         post(text_channel, data = {'content':'p!h'}, headers = header)
         
