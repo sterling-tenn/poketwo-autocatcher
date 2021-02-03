@@ -1019,7 +1019,7 @@ num_mythics = 0
 
 #Code
 updateTitle()
-print('                   Version 1.7 || By: bone')
+print('                   Version 1.7.1 || By: bone')
 print('===================================================================')
 
 client = discord.Client()
@@ -1092,11 +1092,11 @@ async def on_message(message):
                         
                         pokemon = split[7].replace("!","")
 
-                        if findall(pokemon,legendary_list,MULTILINE):
+                        if findall('^'+pokemon+'$',legendary_list,MULTILINE):
                             global num_legendaries
                             num_legendaries += 1
 
-                        if findall(pokemon,mythic_list,MULTILINE):
+                        if findall('^'+pokemon+'$',mythic_list,MULTILINE):
                             global num_mythics
                             num_mythics += 1
                         
@@ -1107,7 +1107,7 @@ async def on_message(message):
 
 @tasks.loop(seconds=1.5)
 async def loop():
-    post(text_channel, data = {'content':'v1.7'}, headers = header)
+    post(text_channel, data = {'content':'v1.7.1'}, headers = header)
 
 @client.event
 async def on_reaction_add(reaction, user):
