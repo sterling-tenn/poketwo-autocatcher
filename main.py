@@ -6,6 +6,7 @@ from re import MULTILINE
 from time import sleep
 from datetime import datetime
 import ctypes
+from random import randint
 
 
 #Function Declarations
@@ -37,6 +38,8 @@ def updateTitle():
 
 
 #Variable Declarations
+version = "v1.8"
+
 informationFile = open("information.txt","r")
 data = []
 for line in informationFile:
@@ -1016,10 +1019,17 @@ num_fled = 0
 num_legendaries = 0
 num_mythics = 0
 
+minutes_to_pause_program_after = 180
+minutes_to_send_random_command = 3
+
+current_minute = int(datetime.now().strftime("%M"))
+future_minute_pause = current_minute + minutes_to_pause_program_after #future minute ahead by 3 hours
+future_minute_random_command = current_minute + minutes_to_send_random_command#future minute ahead by 3 minutes
+
 
 #Code
 updateTitle()
-print('                   Version 1.7.1 || By: bone')
+print('                             '+version+' || By: bone')
 print('===================================================================')
 
 client = discord.Client()
@@ -1107,7 +1117,26 @@ async def on_message(message):
 
 @tasks.loop(seconds=1.5)
 async def loop():
-    post(text_channel, data = {'content':'v1.7.1'}, headers = header)
+    global current_minute
+    global future_minute_pause
+    global future_minute_random_command
+    if current_minute == future_minute_pause:#if it's been 3 hours; future minute is 3 hours ahead of current min
+        sleep(3600)#pause for 1 hour
+
+        current_minute = int(datetime.now().strftime("%M"))#update the current minute
+        future_minute_pause = current_minute + minutes_to_pause_program_after#update the future 3 hours minute
+        future_minute_random_command = current_minute + minutes_to_send_random_command#update the future 3 minute
+    else:  
+        current_minute = int(datetime.now().strftime("%M"))#update the current minute
+        post(text_channel, data = {'content': version}, headers = header)
+
+    if current_minute == future_minute_random_command:#if it's been 3 minutes
+        current_minute = int(datetime.now().strftime("%M"))#update the current minute
+        future_minute_random_command = current_minute + minutes_to_send_random_command#update the future 3 minute
+
+        random_number = randint(1,1000)
+        random_commands = ['p!m s --sh','p!m s','p!i '+str(random_number),'p!bal','p!profile','p!v','p!p']
+        post(text_channel, data = {'content': random_commands[randint(0,len(random_commands)-1)]}, headers = header)
 
 @client.event
 async def on_reaction_add(reaction, user):
