@@ -5,8 +5,11 @@ from re import findall
 from re import MULTILINE
 from time import sleep
 from datetime import datetime
+from datetime import timedelta
 import ctypes
 from random import randint
+from threading import Thread
+import asyncio
 
 
 #Function Declarations
@@ -36,9 +39,24 @@ def printLog(string):
 def updateTitle():
     ctypes.windll.kernel32.SetConsoleTitleW("Poketwo Auto-Catcher || Pokemon Caught: " + str(num_pokemon)+" || Shinies: "+str(num_shinies)+" || Legendaries: "+str(num_legendaries)+" || Mythics: "+str(num_mythics)+" || Fled: "+str(num_fled))
 
+def updateFuturePause(x):
+    return x + timedelta(hours=3)#set how long the program should run for before pausing
+
+def updateFutureRandomCommand(x):
+    return x + timedelta(seconds=20)#set how often the program should send a random command
+
+def setTime():
+    return datetime.now() - timedelta(microseconds=datetime.now().microsecond)#set the time without the decimals from the seconds
+
+def spam():
+    while True:
+        if now != future_pause:
+            post(text_channel, data = {'content': version}, headers = header)
+            sleep(2)
+
 
 #Variable Declarations
-version = "v1.8"
+version = "v1.9"
 
 informationFile = open("information.txt","r")
 data = []
@@ -1019,25 +1037,37 @@ num_fled = 0
 num_legendaries = 0
 num_mythics = 0
 
-minutes_to_pause_program_after = 180
-minutes_to_send_random_command = 3
+now = setTime()#set the current time
 
-current_minute = int(datetime.now().strftime("%M"))
-future_minute_pause = current_minute + minutes_to_pause_program_after #future minute ahead by 3 hours
-future_minute_random_command = current_minute + minutes_to_send_random_command#future minute ahead by 3 minutes
+future_pause = updateFuturePause(now)#set how long the program should run for before pausing
+future_random_command = updateFutureRandomCommand(now)#set how often the program should send a random command
+pause_time = 3600#set how long the program should pause for (in seconds)
+
+time_difference_pause = future_pause - now
+time_difference_random_command = future_random_command - now
+
+random_commands = ['p!m s --sh','p!m s','p!i '+str(randint(1,1000)),'p!bal','p!profile','p!v','p!p']#list of random phrases that can be sent
+
+background_thread = Thread(target=spam)
 
 
 #Code
 updateTitle()
-print('                             '+version+' || By: bone')
-print('===================================================================')
+print('                                '+version+' || By: bone')
+print('=============================================================================')
+print('Current Settings:')
+print('     Pause the program every: '+str(time_difference_pause.seconds) +' seconds for '+str(pause_time)+' seconds.')
+print('     Send a random command every: '+str(time_difference_random_command.seconds) +' seconds when the program is not paused.')
+print('The current datetime is: '+str(now))
+print('=============================================================================')
 
 client = discord.Client()
 @client.event
 async def on_ready():
     print('Connection to bot "{0.user}" established. Starting auto-catcher.'.format(client))
-    print('===================================================================')
-    loop.start()
+    print('=============================================================================')
+    timer.start()
+    background_thread.start()
     print('Log:')
     print('====')
 
@@ -1082,7 +1112,7 @@ async def on_message(message):
                             else: #everything else
                                 post(text_channel, data = {'content': 'p!c '+ solution[i]}, headers = header)
                                 if len(solution) > 1:#if there can be multiple solutions based on the hint, delay to prevent messages not being sent
-                                    sleep(3)
+                                    await asyncio.sleep(3)
 
                     elif is_correct:
                         global num_pokemon
@@ -1112,31 +1142,39 @@ async def on_message(message):
                         
                         updateTitle()
     except Exception:
-        loop.restart()
         pass
 
-@tasks.loop(seconds=1.5)
-async def loop():
-    global current_minute
-    global future_minute_pause
-    global future_minute_random_command
-    if current_minute == future_minute_pause:#if it's been 3 hours; future minute is 3 hours ahead of current min
-        sleep(3600)#pause for 1 hour
+@tasks.loop(seconds=0.5)
+async def timer():
+    global now
+    global future_pause
+    global future_random_command
+    global pause_time
+    if now == future_pause:
+        printLog("The program is now paused and will resume at: "+str(now + timedelta(seconds=pause_time))+" (In "+str(pause_time)+" seconds from now).")
+        sleep(pause_time)#pause the program for the specified amount of seconds
+        
+        now = setTime()#update the current time
+        
+        future_pause = updateFuturePause(now)#update the future pause time
+        future_random_command = updateFutureRandomCommand(now)#update the future random command time
+        printLog("The program has been resumed and will be paused again at: "+str(future_pause))
+    elif now == future_random_command:
+        now = setTime()#update the current time
+        
+        future_random_command = updateFutureRandomCommand(now)#update the future random command time
 
-        current_minute = int(datetime.now().strftime("%M"))#update the current minute
-        future_minute_pause = current_minute + minutes_to_pause_program_after#update the future 3 hours minute
-        future_minute_random_command = current_minute + minutes_to_send_random_command#update the future 3 minute
-    else:  
-        current_minute = int(datetime.now().strftime("%M"))#update the current minute
-        post(text_channel, data = {'content': version}, headers = header)
+        phrase = random_commands[randint(0,len(random_commands)-1)]
 
-    if current_minute == future_minute_random_command:#if it's been 3 minutes
-        current_minute = int(datetime.now().strftime("%M"))#update the current minute
-        future_minute_random_command = current_minute + minutes_to_send_random_command#update the future 3 minute
+        post(text_channel, data = {'content': phrase}, headers = header)
 
-        random_number = randint(1,1000)
-        random_commands = ['p!m s --sh','p!m s','p!i '+str(random_number),'p!bal','p!profile','p!v','p!p']
-        post(text_channel, data = {'content': random_commands[randint(0,len(random_commands)-1)]}, headers = header)
+        if phrase == 'p!m s':
+            for _ in range(0,2):
+                await asyncio.sleep(2)
+                post(text_channel, data = {'content': 'p!n'}, headers = header)
+
+    else: 
+        now = setTime()#update the current time
 
 @client.event
 async def on_reaction_add(reaction, user):
