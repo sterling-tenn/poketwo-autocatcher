@@ -53,10 +53,12 @@ def spam():
         if now != future_pause:
             post(text_channel, data = {'content': version}, headers = header)
             sleep(2)
+        else:
+            sleep(pause_time)
 
 
 #Variable Declarations
-version = "v1.9"
+version = "v1.9.1"
 
 informationFile = open("information.txt","r")
 data = []
