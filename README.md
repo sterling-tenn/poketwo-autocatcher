@@ -1,7 +1,6 @@
 # poketwo-autocatcher
  
 Automatically catch pokemon from the poketwo discord bot (https://github.com/oliver-ni/poketwo)<br />
-Average catchrate: 3 pokemon per minute
 
 Keep the main exe file and the information.txt in the same folder
 
