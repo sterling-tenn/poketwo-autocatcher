@@ -1,10 +1,12 @@
 # poketwo-autocatcher
- 
+### ⚠️This is an *outdated experimental project* that is highly unoptimized as it was just something for me to get more comfortable with Python and Git.⚠️
+<hr/>
+
 Automatically catch pokemon from the poketwo discord bot (https://github.com/oliver-ni/poketwo)<br />
 
-Keep the main exe file and the information.txt in the same folder
-
-SETUP:
+Keep the main exe file and the information.txt in the same folder <br/>
+<br/>
+### SETUP: <hr />
 
 Channel ID: <br />
   Enable discord developer mode <br />
@@ -32,4 +34,8 @@ Bot Token: <br />
  Copy the url that is generated <br />
  Use this URL to invite your bot to your server <br />
  
-Invite poketwo in your server as well and start the exe file.
+Invite poketwo in your server as well and start the exe file.<br/>
+<br/>
+
+### ⚠️DISCLAIMER⚠️ <hr />
+please note that self botting is not allowed by discord (https://support.discord.com/hc/en-us/articles/115002192352-Automated-user-accounts-self-bots-) and that this is just an experimental project for myself</br>
