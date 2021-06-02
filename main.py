@@ -58,7 +58,7 @@ def spam():
 
 
 #Variable Declarations
-version = "v1.9.1"
+version = "v1.9.2"
 
 informationFile = open("information.txt","r")
 data = []
@@ -1007,7 +1007,94 @@ Alolan Golem
 Alolan Grimer
 Alolan Muk
 Alolan Exeggutor
-Alolan Marowak"""
+Alolan Marowak
+Grookey
+Thwackey
+Rillaboom
+Scorbunny
+Raboot
+Cinderace
+Sobble
+Drizzile
+Inteleon
+Skwovet
+Greedent
+Rookidee
+Corvisquire
+Corviknight	
+Blipbug
+Dottler
+Orbeetle
+Nickit
+Thievul
+Gossifleur
+Eldegoss
+Anniversary Wooloo 
+Dubwool
+Chewtle
+Drednaw
+Yamper
+Boltund
+Rolycoly
+Carkol
+Coalossal
+Applin
+Flapple
+Appletun
+Silicobra
+Sandaconda
+Cramorant
+Arrokuda
+Barraskewda
+Toxel
+Toxtricity
+Sizzlipede
+Centiskorch
+Clobbopus
+Grapploct
+Sinistea
+Polteageist
+Hatenna
+Hattrem
+Hatterene
+Impidimp
+Morgrem
+Grimmsnarl
+Obstagoon
+Perrserker
+Cursola
+Sirfetch'd
+Mr. Rime
+Runerigus
+Milcery
+Alcremie
+Falinks
+Pincurchin
+Snom
+Eiscue
+Indeedee
+Morpeko
+Cufant
+Copperajah
+Dracozolt
+Arctozolt
+Dracovish
+Arctovish
+Duraludon
+Dreepy
+Drakloak
+Dragapult
+Zacian
+Zamazenta
+Eternatus
+Kubfu
+Urshifu
+Zarude
+Regieleki	
+Regidrago
+Glastrier
+Spectrier
+Calyrex"""
 
 legendary_list = """Mewtwo
 Rayquaza
@@ -1100,6 +1187,7 @@ async def on_message(message):
                     is_hint = findall('The pokémon is ',message.content)
                     is_correct = findall('Congratulations',message.content)
                     is_shiny = findall('These colors seem unusual...',message.content)
+                    is_captcha = findall("Whoa there. Please tell us you're human!",message.content)
 
                     if is_hint:
                         solution = solve(message.content)
@@ -1143,6 +1231,10 @@ async def on_message(message):
                             num_mythics += 1
                         
                         updateTitle()
+
+                    elif is_captcha:
+                        printLog("captcha, program paused")
+                        input("Press enter to continue")
     except Exception:
         pass
 
