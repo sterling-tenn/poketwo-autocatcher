@@ -58,7 +58,7 @@ def spam():
 
 
 #Variable Declarations
-version = "v1.9.2"
+version = "v1.9.3"
 
 informationFile = open("information.txt","r")
 data = []
@@ -1094,7 +1094,23 @@ Regieleki
 Regidrago
 Glastrier
 Spectrier
-Calyrex"""
+Calyrex
+Galarian Zigzagoon
+Galarian Linoone
+Galarian Meowth
+Galarian Farfetch'd
+Galarian Stunfish
+Galarian Corsola
+Galarian Weezing
+Galarian Yamask
+Galarian Ponyta
+Galarian Rapidash
+Galarian Mr. Mime 
+Galarian Darumaka
+Galarian Darmanitan 
+Galarian Moltres
+Galarian Articuno 
+Galarian Zapdos"""
 
 legendary_list = """Mewtwo
 Rayquaza
