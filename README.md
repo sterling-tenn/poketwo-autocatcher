@@ -3,8 +3,7 @@
 <hr/>
 
 Automatically catch pokemon from the poketwo discord bot (https://github.com/oliver-ni/poketwo)<br />
-
-Keep the main exe file and the information.txt in the same folder <br/>
+<br/>
 <br/>
 ### SETUP: <hr />
 
@@ -34,7 +33,7 @@ Bot Token: <br />
  Copy the url that is generated <br />
  Use this URL to invite your bot to your server <br />
  
-Invite poketwo in your server as well and start the exe file.<br/>
+Invite poketwo in your server as well and start the python file.<br/>
 <br/>
 
 ### ⚠️DISCLAIMER⚠️ <hr />
