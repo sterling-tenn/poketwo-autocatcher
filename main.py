@@ -58,7 +58,7 @@ def spam():
 
 
 #Variable Declarations
-version = "v1.9.3"
+version = "v1.9.4"
 
 informationFile = open("information.txt","r")
 data = []
@@ -1029,7 +1029,7 @@ Nickit
 Thievul
 Gossifleur
 Eldegoss
-Anniversary Wooloo 
+Anniversary Wooloo
 Dubwool
 Chewtle
 Drednaw
