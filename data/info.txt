@@ -1,0 +1,4 @@
+{
+"user_token" : "USER TOKEN GOES HERE",
+"channel_id" : "CHANNEL ID GOES HERE"
+}
