@@ -1,37 +1,19 @@
 # poketwo-autocatcher
-### ⚠️This is an *outdated experimental project* that is highly unoptimized as it was just something for me to get more comfortable with Python and Git.⚠️
-<hr/>
 
 Automatically catch pokemon from the poketwo discord bot (https://github.com/oliver-ni/poketwo)<br />
 <br/>
 <br/>
 ### SETUP: <hr />
 
+Install the requirements.txt file using `pip install -r requirements.txt'<br />
+
 Channel ID: <br />
   Enable discord developer mode <br />
   Right click the channel where you want to catch pokemon and click copy ID<br />
-  Paste the ID in the Channel ID section in the information.txt file<br />
+  Paste the ID in the Channel ID section in the info.txt file located in the data/ folder<br />
 
-Authorization: <br />
-  Open any place in discord where you can send a message <br />
-  Press CTRL + SHIFT + I to open up the inspect panel. <br />
-  Navigate to the "Network" tab at the top <br />
-  Send any message into discord <br />
-  Click on the "messages" item that appears <br />
-  Navigate to the tab "Headers" that shows up after clicking "messages" <br />
-  Look for "authorization: <some string of characters here>" under the "Request Headers" tab <br />
-  Copy the string of characters and paste it into the Authorization section in the information.txt file <br />
- 
-Bot Token: <br />
-  Go to https://discord.com/developers <br />
-  Create a new application and name it whatever you want (This will be the name of your bot) <br />
-  Navigate to the "Bot" section of the application and create a new bot <br />
-  Copy the token and paste it into the information.txt file <br />
-  
- Go to the "OAuth2" section of the application <br />
- Select the "Bot" checkbox in the "Scopes" section <br />
- Copy the url that is generated <br />
- Use this URL to invite your bot to your server <br />
+User Token: <br />
+  Place your discord account's user token into the info.txt file located in the data/ folder <br />
  
 Invite poketwo in your server as well and start the python file.<br/>
 <br/>
