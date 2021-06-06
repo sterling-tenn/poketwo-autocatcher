@@ -1,3 +1,0 @@
-channel id:
-authorization:
-bot token:
