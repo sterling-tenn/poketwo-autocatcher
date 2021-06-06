@@ -1,11 +1,10 @@
 # poketwo-autocatcher
 
 Automatically catch pokemon from the poketwo discord bot (https://github.com/oliver-ni/poketwo)<br />
-<br/>
-<br/>
+
 ### SETUP: <hr />
 
-Install the requirements.txt file using `pip install -r requirements.txt'<br />
+Install the requirements.txt file using ```pip install -r requirements.txt```<br />
 
 Channel ID: <br />
   Enable discord developer mode <br />
