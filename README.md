@@ -12,7 +12,7 @@ Channel ID: <br />
   Paste the ID in the Channel ID section in the info.txt file located in the data/ folder<br />
 
 User Token: <br />
-  Place your discord account's user token into the info.txt file located in the data/ folder <br />
+  Place your discord account's user token (or request header authorization token I guess?) into the info.txt file located in the data/ folder <br />
  
 Invite poketwo in your server as well and start the python file.<br/>
 <br/>
