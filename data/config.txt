@@ -1,6 +1,6 @@
 {
 "user_token" : "USER TOKEN GOES HERE",
 "channel_id" : "CHANNEL ID GOES HERE",
-"time_between_program_pauses" : 10800,
-"program_pause_frequency" : 3600,
+"program_pause_frequency" : 10800,
+"time_to_pause" : 3600
 }
