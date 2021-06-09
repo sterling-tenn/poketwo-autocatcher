@@ -148,6 +148,7 @@ Dratini
 Dragonair
 Dragonite
 Mewtwo
+Shadow Mewtwo
 Mew
 Chikorita
 Bayleef
