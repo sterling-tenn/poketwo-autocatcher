@@ -7,7 +7,7 @@ import json
 import datetime
 
 
-version = "v2.0"
+version = "v2.1"
 
 with open("data\config.txt","r") as file:
     info = file.read()
