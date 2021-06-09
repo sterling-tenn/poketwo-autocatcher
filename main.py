@@ -4,15 +4,18 @@ import time
 import threading
 import multiprocessing
 import json
+import datetime
 
 
 version = "v2.0"
 
-with open("data\info.txt","r") as file:
+with open("data\config.txt","r") as file:
     info = file.read()
     info_json = json.loads(info)
     user_token = info_json["user_token"]
     channel_id = info_json["channel_id"]
+    program_pause_frequency = info_json["program_pause_frequency"]
+    time_to_pause = info_json["time_to_pause"]
 
 with open("data\pokemon.txt","r",encoding="utf8") as file:
     pokemon_list_string = file.read()
@@ -50,15 +53,32 @@ def start_process():
 def stop_process(process_to_stop):
     process_to_stop.terminate()
 
+def print_log(string):
+    now = datetime.datetime.now()
+    current_time = now.strftime("%H:%M:%S")
+    print("[",current_time,"]",string)
+
+def pause_program():
+    global process
+    if "process" in globals():# So the program isn't paused right away (Checks if the variable "process" exists yet)
+        stop_process(process)
+        print_log("program paused")
+        time.sleep(time_to_pause)
+        process = start_process()
+        print_log("program unpaused")
+    threading.Timer(program_pause_frequency,pause_program).start()
+
 
 @bot.gateway.command
-def helloworld(resp):
-    global process
-    
+def on_ready(resp):
     if resp.event.ready_supplemental: #ready_supplemental is sent after ready
         user = bot.gateway.session.user
-        print("Logged in as {}#{}".format(user['username'], user['discriminator']))
-        process = start_process()
+        print_log("LOGGED INTO ACCOUNT: {}#{}".format(user['username'], user['discriminator']))
+
+@bot.gateway.command
+def on_message(resp):
+    global process
+    
     if resp.event.message:
         m = resp.parsed.auto()
 
@@ -85,7 +105,7 @@ def helloworld(resp):
                         solution = solve(content)
                         
                         if len(solution) == 0:
-                            print("Pokemon could not be found in the database.")
+                            print_log("Pokemon could not be found in the database.")
 
                         else:
                             for i in range(0,len(solution)):
@@ -93,5 +113,20 @@ def helloworld(resp):
                                 bot.sendMessage(channel_id,"p!c " + solution[i])
                         process = start_process()
 
+                    elif "Congratulations" in content:
+                        split = content.split(" ")
+                        msg = ""
+                        for i in range (2,len(split)):
+                            msg += split[i] + " "
+                        print_log(msg)
+
+                    elif "Whoa there. Please tell us you're human!" in content:
+                        stop_process(process)
+
+                        if input("Captcha detected, program paused. Press enter to restart."):
+                            process = start_process()
+
 if __name__ == "__main__":
+    pause_program()
+    process = start_process()
     bot.gateway.run(auto_reconnect=True)
