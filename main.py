@@ -5,9 +5,11 @@ import threading
 import multiprocessing
 import json
 import datetime
+import fake_useragent
+import random
 
 
-version = "v2.1"
+version = "v2.2"
 
 with open("data\config.txt","r") as file:
     info = file.read()
@@ -16,13 +18,17 @@ with open("data\config.txt","r") as file:
     channel_id = info_json["channel_id"]
     program_pause_frequency = info_json["program_pause_frequency"]
     time_to_pause = info_json["time_to_pause"]
+    random_command_frequency = info_json["random_command_frequency"]
 
 with open("data\pokemon.txt","r",encoding="utf8") as file:
     pokemon_list_string = file.read()
     
 poketwo_id = "716390085896962058"
+random_commands = ["p!m s --sh","p!m s","p!i "+str(random.randint(1,1000)),"p!bal","p!profile","p!v","p!p"]# List of random phrases that can be sent
 
-bot = discum.Client(token=user_token, log={"console":False, "file":False})
+user_agent = fake_useragent.UserAgent()
+
+bot = discum.Client(token=user_token, log=False, user_agent=user_agent.chrome)
 
 
 def solve(message):
@@ -67,6 +73,26 @@ def pause_program():
         process = start_process()
         print_log("program unpaused")
     threading.Timer(program_pause_frequency,pause_program).start()
+    
+def random_command():
+    global process
+    if "process" in globals():
+
+        if process.is_alive():
+            phrase = random_commands[random.randint(0,len(random_commands)-1)]
+
+            stop_process(process)
+            time.sleep(1)
+
+            bot.sendMessage(channel_id, phrase)
+
+            if phrase == "p!m s":
+                for _ in range(0,2):
+                    time.sleep(1)
+                    bot.sendMessage(channel_id, "p!n")
+
+            process = start_process()
+    threading.Timer(random_command_frequency,random_command).start()
 
 
 @bot.gateway.command
@@ -91,11 +117,11 @@ def on_message(resp):
                 
                     if "A wild pokémon has appeared!" in embed_title:# If wild pokemon appears
                         stop_process(process)
-                        time.sleep(2)
+                        time.sleep(1)
                         bot.sendMessage(channel_id,"p!h")
                     elif "A new wild pokémon has appeared!" in embed_title:# If new wild pokemon appeared after one fled.
                         stop_process(process)
-                        time.sleep(2)
+                        time.sleep(1)
                         bot.sendMessage(channel_id,"p!h")
 
                 else:# If message is not an embedded message
@@ -109,7 +135,7 @@ def on_message(resp):
 
                         else:
                             for i in range(0,len(solution)):
-                                time.sleep(2)
+                                time.sleep(1)
                                 bot.sendMessage(channel_id,"p!c " + solution[i])
                         process = start_process()
 
@@ -127,6 +153,16 @@ def on_message(resp):
                             process = start_process()
 
 if __name__ == "__main__":
+    print(f"                        Poketwo Autocatcher {version}                       ")
+    print("=============================================================================")
+    print("Current Settings:")
+    print(f"     Pause the program every: {program_pause_frequency} seconds for {time_to_pause} seconds.")
+    print(f"     Send a random command every: {random_command_frequency} seconds when the program is not paused.")
+    print("=============================================================================")
+    print("Log:")
+    print("====")
+
     pause_program()
+    random_command()
     process = start_process()
     bot.gateway.run(auto_reconnect=True)
