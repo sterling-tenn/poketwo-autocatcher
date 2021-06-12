@@ -1034,3 +1034,4 @@ Galarian Darmanitan
 Galarian Moltres
 Galarian Articuno 
 Galarian Zapdos
+Galarian Slowpoke
