@@ -117,7 +117,7 @@ def random_command():
 
 @bot.gateway.command
 def on_ready(resp):
-    if resp.event.ready_supplemental: #ready_supplemental is sent after ready
+    if resp.event.ready_supplemental:
         user = bot.gateway.session.user
         print_log("LOGGED INTO ACCOUNT: {}#{}".format(user['username'], user['discriminator']))
 
