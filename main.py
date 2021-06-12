@@ -10,7 +10,7 @@ import random
 import ctypes
 
 
-version = "v2.3.1"
+version = "v2.3.2"
 
 with open("data\config.txt","r") as file:
     info = file.read()
@@ -85,6 +85,8 @@ def print_log(string):
 
 def pause_program():
     global spam_process
+    global random_command_process
+
     if "spam_process" in globals():# So the program isn't paused right away (Checks if the variable "process" exists yet)
         stop_process(spam_process)
         stop_process(random_command_process)
