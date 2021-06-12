@@ -7,9 +7,10 @@ import json
 import datetime
 import fake_useragent
 import random
+import ctypes
 
 
-version = "v2.2"
+version = "v2.3"
 
 with open("data\config.txt","r") as file:
     info = file.read()
@@ -23,8 +24,21 @@ with open("data\config.txt","r") as file:
 with open("data\pokemon.txt","r",encoding="utf8") as file:
     pokemon_list_string = file.read()
     
+with open("data\legendaries.txt","r") as file:
+    legendary_list = file.read()
+
+with open("data\mythics.txt","r") as file:
+    mythic_list = file.read()
+    
 poketwo_id = "716390085896962058"
+
 random_commands = ["p!m s --sh","p!m s","p!i "+str(random.randint(1,1000)),"p!bal","p!profile","p!v","p!p"]# List of random phrases that can be sent
+
+num_pokemon = 0
+num_shinies = 0
+num_legendaries = 0
+num_mythics = 0
+num_fled = 0
 
 user_agent = fake_useragent.UserAgent()
 
@@ -51,8 +65,13 @@ def spam():
         bot.sendMessage(channel_id, version)
         time.sleep(2)
 
-def start_process():
+def start_spam_process():
     new_process = multiprocessing.Process(target=spam)
+    new_process.start()
+    return new_process
+
+def start_random_command_process():
+    new_process = multiprocessing.Process(target=random_command)
     new_process.start()
     return new_process
 
@@ -65,34 +84,35 @@ def print_log(string):
     print("[",current_time,"]",string)
 
 def pause_program():
-    global process
-    if "process" in globals():# So the program isn't paused right away (Checks if the variable "process" exists yet)
-        stop_process(process)
-        print_log("program paused")
+    global spam_process
+    if "spam_process" in globals():# So the program isn't paused right away (Checks if the variable "process" exists yet)
+        stop_process(spam_process)
+        stop_process(random_command_process)
+
+        print_log("Program paused")
         time.sleep(time_to_pause)
-        process = start_process()
-        print_log("program unpaused")
+        
+        spam_process = start_spam_process()
+        random_command_process = start_random_command_process()
+        
+        print_log("Program unpaused")
     threading.Timer(program_pause_frequency,pause_program).start()
-    
+
+def update_title():
+    ctypes.windll.kernel32.SetConsoleTitleW(f"Pokemon Caught: {num_pokemon} || Shinies: {num_shinies} || Legendaries: {num_legendaries} || Mythics: {num_mythics} || Fled: {num_fled}")
+
 def random_command():
-    global process
-    if "process" in globals():
+    while True:
+        time.sleep(random_command_frequency)
 
-        if process.is_alive():
-            phrase = random_commands[random.randint(0,len(random_commands)-1)]
+        phrase = random_commands[random.randint(0,len(random_commands)-1)]
 
-            stop_process(process)
-            time.sleep(1)
+        bot.sendMessage(channel_id, phrase)
 
-            bot.sendMessage(channel_id, phrase)
-
-            if phrase == "p!m s":
-                for _ in range(0,2):
-                    time.sleep(1)
-                    bot.sendMessage(channel_id, "p!n")
-
-            process = start_process()
-    threading.Timer(random_command_frequency,random_command).start()
+        if phrase == "p!m s":
+            for _ in range(0,2):
+                time.sleep(2)
+                bot.sendMessage(channel_id, "p!n")
 
 
 @bot.gateway.command
@@ -103,7 +123,7 @@ def on_ready(resp):
 
 @bot.gateway.command
 def on_message(resp):
-    global process
+    global spam_process
     
     if resp.event.message:
         m = resp.parsed.auto()
@@ -116,12 +136,19 @@ def on_message(resp):
                     embed_title = m["embeds"][0]["title"]
                 
                     if "A wild pokémon has appeared!" in embed_title:# If wild pokemon appears
-                        stop_process(process)
-                        time.sleep(1)
+                        stop_process(spam_process)
+                        time.sleep(2)
                         bot.sendMessage(channel_id,"p!h")
+
                     elif "A new wild pokémon has appeared!" in embed_title:# If new wild pokemon appeared after one fled.
-                        stop_process(process)
-                        time.sleep(1)
+                        global num_fled
+                        num_fled += 1
+                        update_title()
+
+                        print_log("A pokemon has fled.")
+
+                        stop_process(spam_process)
+                        time.sleep(2)
                         bot.sendMessage(channel_id,"p!h")
 
                 else:# If message is not an embedded message
@@ -135,24 +162,44 @@ def on_message(resp):
 
                         else:
                             for i in range(0,len(solution)):
-                                time.sleep(1)
+                                time.sleep(2)
                                 bot.sendMessage(channel_id,"p!c " + solution[i])
-                        process = start_process()
+                        spam_process = start_spam_process()
 
-                    elif "Congratulations" in content:
+                    elif "Congratulations" in content:# If pokemon is caught
+                        global num_pokemon
+                        num_pokemon += 1
+
+                        if "These colors seem unusual..." in content:# If pokemon is shiny
+                            global num_shinies
+                            num_shinies += 1
+
                         split = content.split(" ")
                         msg = ""
                         for i in range (2,len(split)):
                             msg += split[i] + " "
                         print_log(msg)
 
-                    elif "Whoa there. Please tell us you're human!" in content:
-                        stop_process(process)
+                        pokemon = split[7].replace("!","")
+
+                        if re.findall('^'+pokemon+'$',legendary_list,re.MULTILINE):# If pokemon is legendary
+                            global num_legendaries
+                            num_legendaries += 1
+
+                        if re.findall('^'+pokemon+'$',mythic_list,re.MULTILINE):# If pokemon is mythic
+                            global num_mythics
+                            num_mythics += 1
+                        
+                        update_title()
+
+                    elif "Whoa there. Please tell us you're human!" in content:# If captcha appears
+                        stop_process(spam_process)
 
                         if input("Captcha detected, program paused. Press enter to restart."):
-                            process = start_process()
+                            spam_process = start_spam_process()
 
 if __name__ == "__main__":
+    update_title()
     print(f"                        Poketwo Autocatcher {version}                       ")
     print("=============================================================================")
     print("Current Settings:")
@@ -163,6 +210,6 @@ if __name__ == "__main__":
     print("====")
 
     pause_program()
-    random_command()
-    process = start_process()
+    spam_process = start_spam_process()
+    random_command_process = start_random_command_process()
     bot.gateway.run(auto_reconnect=True)
