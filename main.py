@@ -10,7 +10,7 @@ import random
 import ctypes
 
 
-version = "v2.3"
+version = "v2.3.1"
 
 with open("data\config.txt","r") as file:
     info = file.read()
@@ -124,6 +124,7 @@ def on_ready(resp):
 @bot.gateway.command
 def on_message(resp):
     global spam_process
+    global random_command_process
     
     if resp.event.message:
         m = resp.parsed.auto()
@@ -137,6 +138,7 @@ def on_message(resp):
                 
                     if "A wild pokémon has appeared!" in embed_title:# If wild pokemon appears
                         stop_process(spam_process)
+                        stop_process(random_command_process)
                         time.sleep(2)
                         bot.sendMessage(channel_id,"p!h")
 
@@ -148,6 +150,7 @@ def on_message(resp):
                         print_log("A pokemon has fled.")
 
                         stop_process(spam_process)
+                        stop_process(random_command_process)
                         time.sleep(2)
                         bot.sendMessage(channel_id,"p!h")
 
@@ -165,6 +168,7 @@ def on_message(resp):
                                 time.sleep(2)
                                 bot.sendMessage(channel_id,"p!c " + solution[i])
                         spam_process = start_spam_process()
+                        random_command_process = start_random_command_process()
 
                     elif "Congratulations" in content:# If pokemon is caught
                         global num_pokemon
