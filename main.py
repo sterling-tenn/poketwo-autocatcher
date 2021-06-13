@@ -10,7 +10,7 @@ import random
 import ctypes
 
 
-version = "v2.3.2"
+version = "v2.3.3"
 
 with open("data\config.txt","r") as file:
     info = file.read()
@@ -200,9 +200,11 @@ def on_message(resp):
 
                     elif "Whoa there. Please tell us you're human!" in content:# If captcha appears
                         stop_process(spam_process)
+                        stop_process(random_command_process)
 
-                        if input("Captcha detected, program paused. Press enter to restart."):
-                            spam_process = start_spam_process()
+                        input("Captcha detected, program paused. Press enter to restart.")
+                        spam_process = start_spam_process()
+                        random_command_process = start_random_command_process()
 
 if __name__ == "__main__":
     update_title()
