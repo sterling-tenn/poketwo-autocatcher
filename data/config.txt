@@ -1,7 +1,4 @@
 {
 "user_token" : "USER TOKEN GOES HERE",
-"channel_id" : "CHANNEL ID GOES HERE",
-"program_pause_frequency" : 10800,
-"time_to_pause" : 3600,
-"random_command_frequency" : 20
+"channel_id" : "CHANNEL ID GOES HERE"
 }
