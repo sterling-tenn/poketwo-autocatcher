@@ -10,16 +10,12 @@ import random
 import ctypes
 
 
-version = "v2.3.3"
+version = "v2.4"
 
 with open("data\config.txt","r") as file:
-    info = file.read()
-    info_json = json.loads(info)
-    user_token = info_json["user_token"]
-    channel_id = info_json["channel_id"]
-    program_pause_frequency = info_json["program_pause_frequency"]
-    time_to_pause = info_json["time_to_pause"]
-    random_command_frequency = info_json["random_command_frequency"]
+    info = json.loads(file.read())
+    user_token = info["user_token"]
+    channel_id = info["channel_id"]
 
 with open("data\pokemon.txt","r",encoding="utf8") as file:
     pokemon_list_string = file.read()
@@ -31,8 +27,6 @@ with open("data\mythics.txt","r") as file:
     mythic_list = file.read()
     
 poketwo_id = "716390085896962058"
-
-random_commands = ["p!m s --sh","p!m s","p!i "+str(random.randint(1,1000)),"p!bal","p!profile","p!v","p!p"]# List of random phrases that can be sent
 
 num_pokemon = 0
 num_shinies = 0
@@ -70,11 +64,6 @@ def start_spam_process():
     new_process.start()
     return new_process
 
-def start_random_command_process():
-    new_process = multiprocessing.Process(target=random_command)
-    new_process.start()
-    return new_process
-
 def stop_process(process_to_stop):
     process_to_stop.terminate()
 
@@ -83,38 +72,8 @@ def print_log(string):
     current_time = now.strftime("%H:%M:%S")
     print("[",current_time,"]",string)
 
-def pause_program():
-    global spam_process
-    global random_command_process
-
-    if "spam_process" in globals():# So the program isn't paused right away (Checks if the variable "process" exists yet)
-        stop_process(spam_process)
-        stop_process(random_command_process)
-
-        print_log("Program paused")
-        time.sleep(time_to_pause)
-        
-        spam_process = start_spam_process()
-        random_command_process = start_random_command_process()
-        
-        print_log("Program unpaused")
-    threading.Timer(program_pause_frequency,pause_program).start()
-
 def update_title():
     ctypes.windll.kernel32.SetConsoleTitleW(f"Pokemon Caught: {num_pokemon} || Shinies: {num_shinies} || Legendaries: {num_legendaries} || Mythics: {num_mythics} || Fled: {num_fled}")
-
-def random_command():
-    while True:
-        time.sleep(random_command_frequency)
-
-        phrase = random_commands[random.randint(0,len(random_commands)-1)]
-
-        bot.sendMessage(channel_id, phrase)
-
-        if phrase == "p!m s":
-            for _ in range(0,2):
-                time.sleep(2)
-                bot.sendMessage(channel_id, "p!n")
 
 
 @bot.gateway.command
@@ -126,8 +85,7 @@ def on_ready(resp):
 @bot.gateway.command
 def on_message(resp):
     global spam_process
-    global random_command_process
-    
+
     if resp.event.message:
         m = resp.parsed.auto()
 
@@ -140,7 +98,6 @@ def on_message(resp):
                 
                     if "A wild pokémon has appeared!" in embed_title:# If wild pokemon appears
                         stop_process(spam_process)
-                        stop_process(random_command_process)
                         time.sleep(2)
                         bot.sendMessage(channel_id,"p!h")
 
@@ -152,7 +109,6 @@ def on_message(resp):
                         print_log("A pokemon has fled.")
 
                         stop_process(spam_process)
-                        stop_process(random_command_process)
                         time.sleep(2)
                         bot.sendMessage(channel_id,"p!h")
 
@@ -170,7 +126,6 @@ def on_message(resp):
                                 time.sleep(2)
                                 bot.sendMessage(channel_id,"p!c " + solution[i])
                         spam_process = start_spam_process()
-                        random_command_process = start_random_command_process()
 
                     elif "Congratulations" in content:# If pokemon is caught
                         global num_pokemon
@@ -200,24 +155,16 @@ def on_message(resp):
 
                     elif "Whoa there. Please tell us you're human!" in content:# If captcha appears
                         stop_process(spam_process)
-                        stop_process(random_command_process)
 
                         input("Captcha detected, program paused. Press enter to restart.")
                         spam_process = start_spam_process()
-                        random_command_process = start_random_command_process()
 
 if __name__ == "__main__":
     update_title()
     print(f"                        Poketwo Autocatcher {version}                       ")
     print("=============================================================================")
-    print("Current Settings:")
-    print(f"     Pause the program every: {program_pause_frequency} seconds for {time_to_pause} seconds.")
-    print(f"     Send a random command every: {random_command_frequency} seconds when the program is not paused.")
-    print("=============================================================================")
     print("Log:")
     print("====")
 
-    pause_program()
     spam_process = start_spam_process()
-    random_command_process = start_random_command_process()
     bot.gateway.run(auto_reconnect=True)
