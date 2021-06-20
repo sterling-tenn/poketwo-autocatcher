@@ -10,7 +10,7 @@ import random
 import ctypes
 
 
-version = "v2.4"
+version = "v2.4.1"
 
 with open("data\config.txt","r") as file:
     info = json.loads(file.read())
@@ -155,9 +155,10 @@ def on_message(resp):
 
                     elif "Whoa there. Please tell us you're human!" in content:# If captcha appears
                         stop_process(spam_process)
-
-                        input("Captcha detected, program paused. Press enter to restart.")
-                        spam_process = start_spam_process()
+                        
+                        print_log("Captcha detected, program paused. Press enter to restart.")
+                        input()
+                        bot.sendMessage(channel_id,"p!h")
 
 if __name__ == "__main__":
     update_title()
