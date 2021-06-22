@@ -1022,7 +1022,7 @@ Galarian Zigzagoon
 Galarian Linoone
 Galarian Meowth
 Galarian Farfetch'd
-Galarian Stunfish
+Galarian Stunfisk
 Galarian Corsola
 Galarian Weezing
 Galarian Yamask
