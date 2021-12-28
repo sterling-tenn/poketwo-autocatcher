@@ -1,12 +1,17 @@
-# poketwo-autocatcher
+## Pokétwo Autocatcher
 
-Automatically catch pokemon from the poketwo discord bot (https://github.com/oliver-ni/poketwo)<br />
+A truly open-source and free Pokétwo autocatcher, created with the goal of preventing people from wasting their money.
 
-### SETUP: <hr />
+### Requirements
+Please note that this autocatcher requires Python 3.8 installed. Python 3.9 won't work.
 
-Install the requirements.txt file using ```pip install -r requirements.txt```<br />
+### Getting Started:
+To start up the bot for the first time, please install the required dependencies first:
+```
+python -m pip install -U discum
+```
 
-Channel ID: <br />
+Channel ID: <br>
   Enable discord developer mode <br />
   Right click the channel where you want to catch pokemon and click copy ID<br />
   Paste the ID in the Channel ID section in the info.txt file located in the data/ folder<br />
