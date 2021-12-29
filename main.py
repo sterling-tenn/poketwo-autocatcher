@@ -76,7 +76,6 @@ def on_message(resp):
 
                 else: # If the message is not an embedded message
                     content = m["content"]
-
                     if "The pokémon is " in content: # If the message is a hint
                         solution = solve(content)
                         if len(solution) == 0:
@@ -100,7 +99,6 @@ def on_message(resp):
                             pass
                         if re.findall('^'+pokemon+'$', mythical_list, re.MULTILINE): # If the pokemon is mythical
                             pass
-                        bot.sendMessage(channel_id, "p!i")
                         
                     elif "Whoa there. Please tell us you're human!" in content: # If a captcha appears
                         stop_process(spam_process)
