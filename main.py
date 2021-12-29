@@ -52,7 +52,7 @@ def stop_process(process_to_stop):
 def print_log(string):
     now = datetime.datetime.now()
     current_time = now.strftime("%H:%M:%S")
-    print("-", current_time, "- ", + string)
+    print("-", current_time, "- ", string)
 
 @bot.gateway.command
 def on_ready(resp):
@@ -123,7 +123,6 @@ if __name__ == "__main__":
     print(f"Pokétwo Autocatcher {version}")
     print("A truly open-source and free Pokétwo autocatcher.")
     print("\nEvent Log:")
-    input()
 
     spam_process = start_spam_process()
     bot.gateway.run(auto_reconnect=True)
