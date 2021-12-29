@@ -46,20 +46,6 @@ def start_spam_process():
     new_process.start()
     return new_process
 
-def count_pokemon():
-    while True:
-        print(f"{num_shinies} Shiny")
-        print(f"{num_legendaries} Legendary")
-        print(f"{num_mythics} Mythical")
-        print(f"{num_pokemon} Pokemon")
-        print(f"However, {num_shinies} Fled")
-        time.sleep(3600)
-
-def start_count_pokemon():
-    new_process = multiprocessing.Process(target=count_pokemon)
-    new_process.start()
-    return new_process
-
 def stop_process(process_to_stop):
     process_to_stop.terminate()
 
@@ -140,5 +126,4 @@ if __name__ == "__main__":
     print("\nEvent Log:")
 
     spam_process = start_spam_process()
-    count = start_count_pokemon()
     bot.gateway.run(auto_reconnect=True)
