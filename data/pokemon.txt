@@ -249,7 +249,6 @@ Pupitar
 Tyranitar
 Lugia
 Ho-Oh
-Celebi
 Treecko
 Grovyle
 Sceptile
@@ -386,11 +385,7 @@ Latios
 Kyogre
 Groudon
 Rayquaza
-Jirachi
-Deoxys
-Attack Deoxys
-Defense Deoxys
-Speed Deoxys
+
 Turtwig
 Grotle
 Torterra
@@ -495,11 +490,18 @@ Heatran
 Regigigas
 Giratina
 Cresselia
+Darkrai
+Arceus
+Magearna
+Celebi
+Jirachi
+Deoxys
+Attack Deoxys
+Defense Deoxys
+Speed Deoxys
 Phione
 Manaphy
-Darkrai
 Shaymin
-Arceus
 Victini
 Snivy
 Servine
@@ -815,7 +817,6 @@ Celesteela
 Kartana
 Guzzlord
 Necrozma
-Magearna
 Marshadow
 Poipole
 Naganadel
