@@ -11,16 +11,24 @@ To start up the bot for the first time, please install the required dependencies
 python -m pip install -U discum
 ```
 
-Channel ID: <br>
-  Enable discord developer mode <br />
-  Right click the channel where you want to catch pokemon and click copy ID<br />
-  Paste the ID in the Channel ID section in the info.txt file located in the data/ folder<br />
+Once you've installed the required dependencies, open your config.json (located in the data folder) <br>
+and insert the correct data into the following fields
 
-User Token: <br />
-  Place your discord account's user token (or request header authorization token I guess?) into the info.txt file located in the data/ folder <br />
+#### <b>user_token</b>:
+Place your discord account's user token here. You can find instructions on this [here](https://www.youtube.com/watch?v=3W9tAEsK7RM) <br>
  
-Invite poketwo in your server as well and start the python file.<br/>
-<br/>
+#### <b>channel_id</b>:
+This will allow the bot to use your preferred channel to spam as well as catch Pokétwo spawns. <br>
+Make sure you set this carefully, as If you set it to the wrong channel it will spam and catch there. <br>
+See [here](https://www.youtube.com/watch?v=6dqYctHmazc) for help on this.
 
-### ⚠️DISCLAIMER⚠️ <hr />
-please note that self botting is not allowed by discord (https://support.discord.com/hc/en-us/articles/115002192352-Automated-user-accounts-self-bots-) and that this is just an experimental project for myself</br>
+#### <b>Running the bot</b>
+After you've done the above, simply run the following command to start up your very own Pokétwo Autocatcher.
+```
+python3 main.py
+```
+> Remember to cd into your autocatcher folder as well. If you need any help with something, feel free to open an issue
+
+### Disclaimer
+please note that self botting is against Discord's Terms of Service and being discovered <br> 
+using a self bot may result in your account being banned. To avoid this, keep knowledge of your self bot <br> to a minimum and set the channel_id field correctly <br>
