@@ -1,15 +1,22 @@
-Diancie
-Darkrai
-Arceus
 Mew
-Zeraora
-Magearna
 Celebi
 Jirachi
 Deoxys
-Attack Deoxys
-Defense Deoxys
-Speed Deoxys
 Phione
 Manaphy
+Darkrai
 Shaymin
+Arceus
+Victini
+Keldeo
+Meloetta
+Genesect
+Diancie 
+Hoopa
+Volcanion
+Magearna
+Marshadow
+Zeraora
+Meltan
+Melmetal
+Zarude

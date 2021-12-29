@@ -16,12 +16,6 @@ with open("data/mythical.txt","r") as file:
     
 poketwo_id = "716390085896962058"
 
-num_pokemon = 0
-num_shinies = 0
-num_legendaries = 0
-num_mythics = 0
-num_fled = 0
-
 bot = discum.Client(token=user_token, log=False)
 
 def solve(message):
@@ -52,7 +46,7 @@ def stop_process(process_to_stop):
 def print_log(string):
     now = datetime.datetime.now()
     current_time = now.strftime("%H:%M:%S")
-    print("[",current_time,"]",string)
+    print("[", current_time, "] ", string)
 
 @bot.gateway.command
 def on_ready(resp):
@@ -72,15 +66,13 @@ def on_message(resp):
                     if "A wild pokémon has appeared!" in embed_title: # If a wild pokemon appears
                         stop_process(spam_process)
                         time.sleep(2)
-                        bot.sendMessage(channel_id,"p!h")
+                        bot.sendMessage(channel_id, "p!h")
 
                     elif "A new wild pokémon has appeared!" in embed_title: # If a new wild pokemon appeared after one fled.
-                        global num_fled
-                        num_fled += 1
                         print_log("A pokemon has fled.")
                         stop_process(spam_process)
                         time.sleep(2)
-                        bot.sendMessage(channel_id,"p!h")
+                        bot.sendMessage(channel_id, "p!h")
 
                 else: # If the message is not an embedded message
                     content = m["content"]
@@ -92,31 +84,27 @@ def on_message(resp):
                         else:
                             for i in range(0,len(solution)):
                                 time.sleep(2)
-                                bot.sendMessage(channel_id,"p!c " + solution[i])
+                                bot.sendMessage(channel_id, "p!c " + solution[i])
                         spam_process = start_spam_process()
 
                     elif "Congratulations" in content: # If the pokemon is successfully caught
-                        global num_pokemon
-                        num_pokemon += 1
                         if "These colors seem unusual..." in content: # If the pokemon is shiny
-                            global num_shinies
-                            num_shinies += 1
+                            pass
                         split = content.split(" ")
                         msg = ""
                         for i in range (2,len(split)):
                             msg += split[i] + " "
                         print_log(msg)
                         pokemon = split[7].replace("!","")
-                        if re.findall('^'+pokemon+'$',legendary_list,re.MULTILINE): # If the pokemon is legendary
-                            global num_legendaries
-                            num_legendaries += 1
-                        if re.findall('^'+pokemon+'$',mythical_list,re.MULTILINE): # If the pokemon is mythical
-                            global num_mythics
-                            num_mythics += 1
+                        if re.findall('^'+pokemon+'$', legendary_list, re.MULTILINE): # If the pokemon is legendary
+                            pass
+                        if re.findall('^'+pokemon+'$', mythical_list, re.MULTILINE): # If the pokemon is mythical
+                            pass
+                        bot.sendMessage(channel_id, "p!i")
                         
                     elif "Whoa there. Please tell us you're human!" in content: # If a captcha appears
                         stop_process(spam_process)
-                        print_log("Captcha detected, program paused. Press enter to restart.")
+                        print_log("Captcha detected, Pokétwo Autocatcher paused. Press enter to restart.")
                         input()
                         bot.sendMessage(channel_id,"p!h")
 

@@ -1,17 +1,62 @@
 Mewtwo
+Moltres
+Articuno
+Zapdos
+Lugia
+Ho-Oh
+Entei
+Suicune
+Raikou
+Regirock
+Regice
+Registeel
+Latias
+Latios
+Groudon
+Kyogre
 Rayquaza
-Necrozma
-Yveltal
-Xerneas
 Dialga
 Palkia
 Giratina
-Zekrom
+Uxie
+Mesprit
+Azelf
+Cresselia
+Heatran
+Regigigas
+Cobalion
+Terrakion
+Virizion
+Tornadus
+Thundurus
+Landorus
 Reshiram
+Zekrom
+Kyurem
+Xerneas
+Yveltal
+Zygarde
+Type: Null
+Silvally
+Tapu Koko
+Tapu Lele
+Tapu Bulu
+Tapu Fini
 Cosmog
 Cosmoem
 Solgaleo
 Lunala
-Kyurem
-Groudon
-Kyogre
+Necrozma
+Zacian
+Zamazenta
+Eternatus
+Kubfu
+Urshifu
+Regieleki
+Regidrago
+Galarian Articuno
+Galarian Moltres
+Galarian Zapdos
+Glastrier
+Spectrier
+Calyrex
