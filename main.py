@@ -7,15 +7,10 @@ with open("data/config.json","r") as file:
     user_token = info["user_token"]
     channel_id = info["channel_id"]
 
-with open("data/pokemon.txt","r",encoding="utf8") as file:
+with open("data/pokemon.txt", "r", encoding="utf8") as file:
     pokemon_list = file.read()
-with open("data/legendary.txt","r") as file:
-    legendary_list = file.read()
-with open("data/mythical.txt","r") as file:
-    mythical_list = file.read()
     
 poketwo_id = "716390085896962058"
-
 bot = discum.Client(token=user_token, log=False)
 
 def solve(message):
@@ -32,27 +27,27 @@ def solve(message):
 
 def spam():
     while True:
-        bot.sendMessage(channel_id, "A")
+        bot.sendMessage(channel_id, "spam")
         time.sleep(2)
 
-def start_spam_process():
+def start_spam():
     new_process = multiprocessing.Process(target=spam)
     new_process.start()
     return new_process
 
-def stop_process(process_to_stop):
-    process_to_stop.terminate()
+def stop(process):
+    process.terminate()
 
-def print_log(string):
+def log(string):
     now = datetime.datetime.now()
     current_time = now.strftime("%H:%M:%S")
-    print("[", current_time, "] ", string)
+    print(f"[{current_time}]", string)
 
 @bot.gateway.command
 def on_ready(resp):
     if resp.event.ready_supplemental:
         user = bot.gateway.session.user
-        print_log(f"Logged into account: {user['username']}#{user['discriminator']}")
+        log(f"Logged into account: {user['username']}#{user['discriminator']}")
 
 @bot.gateway.command
 def on_message(resp):
@@ -64,13 +59,13 @@ def on_message(resp):
                 if m["embeds"]: # If the message is an embedded message
                     embed_title = m["embeds"][0]["title"]
                     if "A wild pokémon has appeared!" in embed_title: # If a wild pokemon appears
-                        stop_process(spam_process)
+                        stop(spam_process)
                         time.sleep(2)
                         bot.sendMessage(channel_id, "p!h")
 
                     elif "A new wild pokémon has appeared!" in embed_title: # If a new wild pokemon appeared after one fled.
-                        print_log("A pokemon has fled.")
-                        stop_process(spam_process)
+                        log("A pokemon has fled.")
+                        stop(spam_process)
                         time.sleep(2)
                         bot.sendMessage(channel_id, "p!h")
 
@@ -79,37 +74,29 @@ def on_message(resp):
                     if "The pokémon is " in content: # If the message is a hint
                         solution = solve(content)
                         if len(solution) == 0:
-                            print_log("Pokemon could not be found in the database.")
+                            log("Pokemon could not be found in the database.")
                         else:
                             for i in range(0,len(solution)):
                                 time.sleep(2)
                                 bot.sendMessage(channel_id, "p!c " + solution[i])
-                        spam_process = start_spam_process()
+                        spam_process = start_spam()
 
                     elif "Congratulations" in content: # If the pokemon is successfully caught
-                        if "These colors seem unusual..." in content: # If the pokemon is shiny
-                            pass
                         split = content.split(" ")
                         msg = ""
                         for i in range (2,len(split)):
                             msg += split[i] + " "
-                        print_log(msg)
-                        pokemon = split[7].replace("!","")
-                        if re.findall('^'+pokemon+'$', legendary_list, re.MULTILINE): # If the pokemon is legendary
-                            pass
-                        if re.findall('^'+pokemon+'$', mythical_list, re.MULTILINE): # If the pokemon is mythical
-                            pass
+                        log(msg)
                         
                     elif "Whoa there. Please tell us you're human!" in content: # If a captcha appears
-                        stop_process(spam_process)
-                        print_log("Captcha detected, Pokétwo Autocatcher paused. Press enter to restart.")
+                        stop(spam_process)
+                        log("Captcha detected, Pokétwo Autocatcher paused. Press enter to restart.")
                         input()
                         bot.sendMessage(channel_id,"p!h")
 
 if __name__ == "__main__":
     print(f"Pokétwo Autocatcher {version}")
     print("A truly open-source and free Pokétwo autocatcher.")
-    print("\nEvent Log:")
-
-    spam_process = start_spam_process()
+    print("Event Log:")
+    spam_process = start_spam()
     bot.gateway.run(auto_reconnect=True)
