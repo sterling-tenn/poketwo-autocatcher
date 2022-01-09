@@ -16,8 +16,10 @@ Please note that this autocatcher requires Python 3.8 installed. Python 3.9 won'
 ### Getting Started:
 To start up the bot for the first time, please install the required dependencies first:
 ```
-python -m pip install -U discum
+python -m pip install -U git+https://github.com/Merubokkusu/Discord-S.C.U.M.git
 ```
+> Remember to modify the command to your installed one if necessary. <br>
+> However, this command should work in most cases.
 
 #### <b>Running the bot</b>
 Once you have installed the correct dependencies, run the `setup.py` file and enter in the following fields when asked.
