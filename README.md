@@ -41,7 +41,7 @@ The command may vary depending on your operating system, so try `python3 main.py
 > Remember to cd into your autocatcher folder as well. If you need any help with something, feel free to open a Github Issue.
 
 ### Setting up on repl.it
-To setup the autocatcher via repl.it, go to the repl.it [here](https://replit.com/@devraza/autocatcher). <br>
+To setup the autocatcher via repl.it, go to the repl.it [here](https://replit.com/@devraza/autocatcher).
 Once the repl.it page is opened, click 'Fork repl'. Fill in any required information when prompted, and then <br> click the green 'Run' button at the top of the repl; give the info needed by the self bot when prompted, and then you're good to go!
 
 ### Disclaimer
