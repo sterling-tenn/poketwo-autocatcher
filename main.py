@@ -1,6 +1,6 @@
 import discum, re, time, multiprocessing, json, datetime
 
-version = "v2.4.1"
+version = "v2.5"
 
 with open("data/config.json","r") as file:
     info = json.loads(file.read())
