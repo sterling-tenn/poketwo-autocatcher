@@ -9,7 +9,20 @@ with open("data/config.json","r") as file:
 
 with open("data/pokemon.txt", "r", encoding="utf8") as file:
     pokemon_list = file.read()
-    
+with open("data/legendary.txt","r") as file:
+    legendary_list = file.read()
+with open("data/mythical.txt","r") as file:
+    mythical_list = file.read()
+with open("data/ultrabeast.txt","r") as file:
+    ub_list = file.read()
+
+num_pokemon = 0
+num_shinies = 0
+num_legendary = 0
+num_ub = 0
+num_mythical = 0
+num_fled = 0
+
 poketwo_id = "716390085896962058"
 bot = discum.Client(token=user_token, log=False)
 
@@ -82,11 +95,35 @@ def on_message(resp):
                         spam_process = start_spam()
 
                     elif "Congratulations" in content: # If the pokemon is successfully caught
+                        global num_pokemon
+                        num_pokemon += 1
+
                         split = content.split(" ")
-                        msg = ""
-                        for i in range (2,len(split)):
-                            msg += split[i] + " "
-                        log(msg)
+                        # msg = ""
+                        # for i in range (2,len(split)):
+                        #     msg += split[i] + " "
+                        # log(msg)
+                        pokemon = split[7].replace("!","")
+
+                        if "These colors seem unusual..." in content: # If the pokemon is shiny
+                            global num_shinies
+                            num_shinies += 1
+                            log(f"A shiny Pokémon was caught! Pokemon Name: {pokemon}")
+                        elif re.findall('^'+pokemon+'$', legendary_list, re.MULTILINE) :# If the pokemon is legendary
+                            global num_legendary
+                            num_legendary += 1
+                            log(f"A legendary Pokémon was caught! Pokémon Name: {pokemon}")
+                        elif re.findall('^'+pokemon+'$', mythical_list, re.MULTILINE): # If the pokemon is mythical
+                            global num_mythical
+                            num_mythical += 1
+                            log(f"A mythical Pokémon was caught! Pokémon Name: {pokemon}")
+                        elif re.findall('^'+pokemon+'$', ub_list, re.MULTILINE): # If the pokemon is an ultra beast
+                            global num_ub
+                            num_ub += 1
+                            log(f"An ultra beast was caught! Pokémon Name: {pokemon}")
+                        else:
+                            print(f"Total Pokémon Caught: {num_pokemon}")
+                        print(f"Shiny: {num_shinies} | Legendary: {num_legendary} | Mythical: {num_mythical} | Ultra Beast: {num_ub}")
                         
                     elif "Whoa there. Please tell us you're human!" in content: # If a captcha appears
                         stop(spam_process)

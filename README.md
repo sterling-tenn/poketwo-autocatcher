@@ -7,6 +7,7 @@ A truly open-source and free Pokétwo autocatcher, created with the goal of prev
 The bot has the following features:
 - Easy Setup (simply run a script and enter the correct information, no 'programming' required)
 - Get notified when and if you've caught a Pokémon, and also if another event occurs
+    - See when a Shiny/Legendary/Ultra Beast/Mythical Pokémon is caught, and which one it is!
 - **Completely free** and open-source (you can see the code as it is currently)
 - Support for all Pokémon from generation I to generation VIII, including Alolan and Galarian Pokémon
 
@@ -46,4 +47,4 @@ Once the repl.it page is opened, click 'Fork repl'. <br> Fill in any required in
 
 ### Disclaimer
 please note that self botting is against Discord's Terms of Service and being discovered <br> 
-using a self bot may result in your account being banned. To avoid this, keep knowledge of your self bot <br> to a minimum and set the channel_id field correctly <br>
+using a self bot may result in your account being banned. To avoid this, keep knowledge of your self bot <br> to a minimum and set the channel_id field correctly. I am not responsible for any accounts lost due to the self bot. <br> I also recommend checking the self bot channel's messages occasionally to see if Pokétwo has sent a captcha. <br> **If it has, it would be a good idea to solve it.** <br>
