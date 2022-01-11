@@ -1,4 +1,4 @@
-import discum, re, time, multiprocessing, json, datetime
+import discum, re, time, multiprocessing, json, datetime, random
 
 version = "v2.5"
 
@@ -13,15 +13,11 @@ with open("data/legendary.txt","r") as file:
     legendary_list = file.read()
 with open("data/mythical.txt","r") as file:
     mythical_list = file.read()
-with open("data/ultrabeast.txt","r") as file:
-    ub_list = file.read()
 
 num_pokemon = 0
-num_shinies = 0
+num_shiny = 0
 num_legendary = 0
-num_ub = 0
 num_mythical = 0
-num_fled = 0
 
 poketwo_id = "716390085896962058"
 bot = discum.Client(token=user_token, log=False)
@@ -40,8 +36,9 @@ def solve(message):
 
 def spam():
     while True:
-        bot.sendMessage(channel_id, "spam")
-        time.sleep(2)
+        num = f"{random.randint(1, 11111111111111111)}"
+        bot.sendMessage(channel_id, f"{num}")
+        time.sleep(1)
 
 def start_spam():
     new_process = multiprocessing.Process(target=spam)
@@ -71,69 +68,53 @@ def on_message(resp):
             if m["author"]["id"] == poketwo_id: # If it's a message sent by Poketwo
                 if m["embeds"]: # If the message is an embedded message
                     embed_title = m["embeds"][0]["title"]
-                    if "A wild pokémon has appeared!" in embed_title: # If a wild pokemon appears
-                        stop(spam_process)
+                    if "pokémon has appeared!" in embed_title: # If a wild pokemon appears
                         time.sleep(2)
                         bot.sendMessage(channel_id, "p!h")
-
-                    elif "A new wild pokémon has appeared!" in embed_title: # If a new wild pokemon appeared after one fled.
-                        log("A pokemon has fled.")
-                        stop(spam_process)
-                        time.sleep(2)
-                        bot.sendMessage(channel_id, "p!h")
-
-                else: # If the message is not an embedded message
+                else:
                     content = m["content"]
-                    if "The pokémon is " in content: # If the message is a hint
+                    if "The pokémon is " in content:
+                        stop(spam_process)
                         solution = solve(content)
                         if len(solution) == 0:
-                            log("Pokemon could not be found in the database.")
+                            log("Pokemon not found.")
                         else:
                             for i in range(0,len(solution)):
                                 time.sleep(2)
                                 bot.sendMessage(channel_id, "p!c " + solution[i])
                         spam_process = start_spam()
 
-                    elif "Congratulations" in content: # If the pokemon is successfully caught
+                    elif "Congratulations" in content:
                         global num_pokemon
                         num_pokemon += 1
-
                         split = content.split(" ")
-                        # msg = ""
-                        # for i in range (2,len(split)):
-                        #     msg += split[i] + " "
-                        # log(msg)
                         pokemon = split[7].replace("!","")
 
-                        if "These colors seem unusual..." in content: # If the pokemon is shiny
-                            global num_shinies
-                            num_shinies += 1
-                            log(f"A shiny Pokémon was caught! Pokemon Name: {pokemon}")
-                        elif re.findall('^'+pokemon+'$', legendary_list, re.MULTILINE) :# If the pokemon is legendary
+                        if "These colors seem unusual..." in content:
+                            global num_shiny
+                            num_shiny += 1
+                            log(f"A shiny Pokémon was caught! Pokémon: {pokemon}")
+                        elif re.findall('^'+pokemon+'$', legendary_list, re.MULTILINE):
                             global num_legendary
                             num_legendary += 1
-                            log(f"A legendary Pokémon was caught! Pokémon Name: {pokemon}")
-                        elif re.findall('^'+pokemon+'$', mythical_list, re.MULTILINE): # If the pokemon is mythical
+                            log(f"A legendary Pokémon was caught! Pokémon: {pokemon}")
+                        elif re.findall('^'+pokemon+'$', mythical_list, re.MULTILINE):
                             global num_mythical
                             num_mythical += 1
-                            log(f"A mythical Pokémon was caught! Pokémon Name: {pokemon}")
-                        elif re.findall('^'+pokemon+'$', ub_list, re.MULTILINE): # If the pokemon is an ultra beast
-                            global num_ub
-                            num_ub += 1
-                            log(f"An ultra beast was caught! Pokémon Name: {pokemon}")
+                            log(f"A mythical Pokémon was caught! Pokémon: {pokemon}")
                         else:
                             print(f"Total Pokémon Caught: {num_pokemon}")
-                        print(f"Shiny: {num_shinies} | Legendary: {num_legendary} | Mythical: {num_mythical} | Ultra Beast: {num_ub}")
+                        print(f"Shiny: {num_shinies} | Legendary: {num_legendary} | Mythical: {num_mythical}")
                         
-                    elif "Whoa there. Please tell us you're human!" in content: # If a captcha appears
+                    elif "human" in content: # If a captcha appears
                         stop(spam_process)
-                        log("Captcha detected, Pokétwo Autocatcher paused. Press enter to restart.")
+                        log("Captcha detected; autocatcher paused. Press enter to restart.")
                         input()
-                        bot.sendMessage(channel_id,"p!h")
+                        bot.sendMessage(channel_id, "p!h")
 
 if __name__ == "__main__":
     print(f"Pokétwo Autocatcher {version}")
     print("A truly open-source and free Pokétwo autocatcher.")
     print("Event Log:")
     spam_process = start_spam()
-    bot.gateway.run(auto_reconnect=True)
+    bot.gateway.run()
