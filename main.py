@@ -113,8 +113,6 @@ def on_message(resp):
                         bot.sendMessage(channel_id, "p!h")
 
 if __name__ == "__main__":
-    print(f"Pokétwo Autocatcher {version}")
-    print("A truly open-source and free Pokétwo autocatcher.")
-    print("Event Log:")
+    print(f"Pokétwo Autocatcher {version}\nA FOSS Pokétwo autocatcher\nEvent Log:")
     spam_process = start_spam()
     bot.gateway.run()
