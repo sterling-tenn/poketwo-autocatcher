@@ -66,6 +66,10 @@ def on_ready(resp):
 def on_message(resp):
     global spam_process
     global num_shiny
+    global num_legendary
+    global num_pokemon
+    global num_mythical
+
     if resp.event.message:
         m = resp.parsed.auto()
         if m['channel_id'] == channel_id:
@@ -103,7 +107,6 @@ def on_message(resp):
                         spam_process = start_spam()
 
                     elif 'Congratulations' in content:
-                        global num_pokemon
                         num_pokemon += 1
                         split = content.split(' ')
                         pokemon = split[7].replace('!','')
@@ -113,12 +116,10 @@ def on_message(resp):
                             log(f'A shiny Pokémon was caught! Pokémon: {pokemon}')
                             show_count()
                         elif re.findall('^'+pokemon+'$', legendary_list, re.MULTILINE):
-                            global num_legendary
                             num_legendary += 1
                             show_count()
                             log(f'A legendary Pokémon was caught! Pokémon: {pokemon}')
                         elif re.findall('^'+pokemon+'$', mythical_list, re.MULTILINE):
-                            global num_mythical
                             num_mythical += 1
                             log(f'A mythical Pokémon was caught! Pokémon: {pokemon}')
                             show_count()
