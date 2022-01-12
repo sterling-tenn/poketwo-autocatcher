@@ -84,9 +84,11 @@ def on_message(resp):
                     elif 'is now level' in embed_content:
                         stop(spam_process)
                         split = embed_content.split(' ')
-                        level = split[5].replace('!', '')
-                        int_level = int(level)
-                        if int_level == 100:
+                        if '"' in embed_content:
+                            level = split[6].replace('!', '')
+                        else:
+                            level = split[5].replace('!', '')
+                        if level == 100:
                             bot.sendMessage(channel_id, f"p!s {to_level}")
                             with open('data/level.txt', 'r') as fin:
                                 data = fin.read().splitlines(True)
