@@ -64,11 +64,11 @@ def on_message(resp):
     global spam_process
     if resp.event.message:
         m = resp.parsed.auto()
-        if m["channel_id"] == channel_id: # If the message is in the right channel
-            if m["author"]["id"] == poketwo_id: # If it's a message sent by Poketwo
-                if m["embeds"]: # If the message is an embedded message
+        if m["channel_id"] == channel_id:
+            if m["author"]["id"] == poketwo_id:
+                if m["embeds"]:
                     embed_title = m["embeds"][0]["title"]
-                    if "pokémon has appeared!" in embed_title: # If a wild pokemon appears
+                    if "pokémon has appeared!" in embed_title:
                         time.sleep(2)
                         bot.sendMessage(channel_id, "p!h")
                 else:
@@ -104,9 +104,9 @@ def on_message(resp):
                             log(f"A mythical Pokémon was caught! Pokémon: {pokemon}")
                         else:
                             print(f"Total Pokémon Caught: {num_pokemon}")
-                        print(f"Shiny: {num_shinies} | Legendary: {num_legendary} | Mythical: {num_mythical}")
+                        print(f"Shiny: {num_shiny} | Legendary: {num_legendary} | Mythical: {num_mythical}")
                         
-                    elif "human" in content: # If a captcha appears
+                    elif "human" in content:
                         stop(spam_process)
                         log("Captcha detected; autocatcher paused. Press enter to restart.")
                         input()
