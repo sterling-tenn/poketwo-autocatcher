@@ -43,6 +43,9 @@ The command may vary depending on your operating system, so try `python3 main.py
 
 > Remember to cd into your autocatcher folder as well. If you need any help with something, feel free to open a Github Issue.
 
+### Auto-levelling
+To enable auto-levelling, just put in the ID's of the Pokémon you want to be levelled up into the `level.txt` text file.
+
 <h3 style="color:#f76767;"><b>Disclaimer</b></h3>
 Please note that self botting is against Discord's Terms of Service and being discovered <br> 
-using a self bot may result in your account being banned. To avoid this, keep knowledge of your self bot <br> to a minimum and use a throwaway account. I am not responsible for any accounts lost due to the self bot. <br> I also recommend checking the self bot channel's messages occasionally to see if Pokétwo has sent a captcha. <br> **If it has, it would be a good idea to solve it.** <br>
+using a self bot may result in your account being banned. To avoid this, keep knowledge of your self bot <br> to a minimum and use a throwaway account. I am not responsible for any accounts lost due to the self bot. <br> I also recommend checking the self bot channel's messages occasionally to see if Pokétwo has sent a captcha. <br> <b>If it has, it would be a good idea to solve it.</b> <br>
