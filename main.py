@@ -65,6 +65,7 @@ def on_ready(resp):
 @bot.gateway.command
 def on_message(resp):
     global spam_process
+    global num_shiny
     if resp.event.message:
         m = resp.parsed.auto()
         if m['channel_id'] == channel_id:
@@ -108,7 +109,6 @@ def on_message(resp):
                         pokemon = split[7].replace('!','')
                         show_count = print(f'Shiny: {num_shiny} | Legendary: {num_legendary} | Mythical: {num_mythical}')
                         if 'These colors seem unusual...' in content:
-                            global num_shiny
                             num_shiny += 1
                             log(f'A shiny Pokémon was caught! Pokémon: {pokemon}')
                             show_count()
