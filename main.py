@@ -41,7 +41,7 @@ def spam():
     while True:
         num = f'{random.randint(1, 10000000000000000)}'
         bot.sendMessage(channel_id, f'{num}')
-        time.sleep(1.5)
+        time.sleep(2)
 
 def start_spam():
     new_process = multiprocessing.Process(target=spam)
@@ -80,19 +80,19 @@ def on_message(resp):
                     if 'pokémon has appeared!' in embed_title:
                         time.sleep(2)
                         bot.sendMessage(channel_id, 'p!h')
-                    if 'is now level' in embed_content:
+                    elif 'is now level' in embed_content:
+                        stop(spam_process)
                         split = embed_content.split(' ')
-                        level = int(split[6].replace('!', ''))
-                        if level != 100:
+                        level = split[5].replace('!', '')
+                        if int(level) != 100:
                             pass
                         else:
                             bot.sendMessage(channel_id, f"p!s {to_level}")
-                            ptr = 1
-                            with open('data/level.txt', 'w') as f:
-                                for line in lines:
-                                    if ptr != 1:
-                                        f.write(line)
-                                    ptr += 1
+                            with open('data/level.txt', 'r') as fin:
+                                data = fin.read().splitlines(True)
+                            with open('data/level.txt', 'w') as fout:
+                                fout.writelines(data[1:])
+                        spam_process = start_spam()
                 else:
                     content = m['content']
                     if 'The pokémon is ' in content:
