@@ -78,6 +78,7 @@ def on_message(resp):
                     embed_title = m['embeds'][0]['title']
                     embed_content = m['embeds'][0]['description']
                     if 'pokémon has appeared!' in embed_title:
+                        stop(spam_process)
                         time.sleep(2)
                         bot.sendMessage(channel_id, 'p!h')
                     elif 'is now level' in embed_content:
@@ -96,7 +97,6 @@ def on_message(resp):
                 else:
                     content = m['content']
                     if 'The pokémon is ' in content:
-                        stop(spam_process)
                         solution = solve(content)
                         if len(solution) == 0:
                             log('Pokemon not found.')
