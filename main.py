@@ -134,4 +134,4 @@ def on_message(resp):
 if __name__ == '__main__':
     print(f'Pokétwo Autocatcher {version}\nA FOSS Pokétwo autocatcher\nEvent Log:')
     spam_process = start_spam()
-    bot.gateway.run()
+    bot.gateway.run(auto_reconnect=True)
