@@ -45,6 +45,8 @@ The command may vary depending on your operating system, so try `python3 main.py
 To setup the autocatcher via repl.it, go to the repl.it [here](https://replit.com/@devraza/autocatcher).
 Once the repl.it page is opened, click 'Fork repl'. <br> Fill in any required information when prompted, and then click the green 'Run' button at the top of the repl; give the info needed by the self bot when prompted, and then you're good to go!
 
+> Please note that creating your self bot on a public repl will mean that anyone who sees the repl can access your account. <br> Private repl's are paid by default, so unless you are willing to pay for a private repl, just host it yourself.
+
 ### Disclaimer
 Please note that self botting is against Discord's Terms of Service and being discovered <br> 
 using a self bot may result in your account being banned. To avoid this, keep knowledge of your self bot <br> to a minimum and set the channel_id field correctly. I am not responsible for any accounts lost due to the self bot. <br> I also recommend checking the self bot channel's messages occasionally to see if Pokétwo has sent a captcha. <br> **If it has, it would be a good idea to solve it.** <br>
