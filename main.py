@@ -1,6 +1,6 @@
 import discum, re, time, multiprocessing, json, datetime, random
 
-version = 'v2.5'
+version = 'v2.6'
 
 with open('data/config.json','r') as file:
     info = json.loads(file.read())
