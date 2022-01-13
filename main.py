@@ -15,12 +15,11 @@ with open('data/mythical.txt','r') as file:
     mythical_list = file.read()
 with open('data/level.txt','r') as file:
     to_level = file.readline()
-    lines = file.readlines()
 
 num_pokemon = 0
-num_shiny = 0
-num_legendary = 0
-num_mythical = 0
+shiny = 0
+legendary = 0
+mythical = 0
 
 poketwo_id = '716390085896962058'
 bot = discum.Client(token=user_token, log=False)
@@ -39,8 +38,7 @@ def solve(message):
 
 def spam():
     while True:
-        num = f'{random.randint(1, 10000000000000000)}'
-        bot.sendMessage(channel_id, f'{num}')
+        bot.sendMessage(channel_id, 'spawning')
         time.sleep(2)
 
 def start_spam():
@@ -65,10 +63,6 @@ def on_ready(resp):
 @bot.gateway.command
 def on_message(resp):
     global spam_process
-    global num_shiny
-    global num_legendary
-    global num_pokemon
-    global num_mythical
 
     if resp.event.message:
         m = resp.parsed.auto()
@@ -76,52 +70,56 @@ def on_message(resp):
             if m['author']['id'] == poketwo_id:
                 if m['embeds']:
                     embed_title = m['embeds'][0]['title']
-                    if 'A wild pokémon has appeared!' in embed_title:
+                    if "Congratulations" in embed_title:
+                        embed_content = m['embeds'][0]['description']
+                        if 'now level' in embed_content:
+                            stop(spam_process)
+                            split = embed_content.split(' ')
+                            a = embed_content.count(' ')
+                            level = int(split[a].replace('!', ''))
+                            if level == 100:
+                                bot.sendMessage(channel_id, f"p!s {to_level}")
+                                with open('data/level.txt', 'r') as fi:
+                                    data = fi.read().splitlines(True)
+                                with open('data/level.txt', 'w') as fo:
+                                    fo.writelines(data[1:])
+                                spam_process = start_spam()
+                            else:
+                                spam_process = start_spam()
+                    elif 'wild pokémon has appeared!' in embed_title:
                         stop(spam_process)
                         time.sleep(2)
                         bot.sendMessage(channel_id, 'p!h')
-                    embed_content = m['embeds'][0]['description']
-                    if 'is now level' in embed_content:
-                        stop(spam_process)
-                        split = embed_content.split(' ')
-                        if '"' in embed_content:
-                            level = split[6].replace('!', '')
-                        else:
-                            level = split[5].replace('!', '')
-                        if level == 100:
-                            bot.sendMessage(channel_id, f"p!s {to_level}")
-                            with open('data/level.txt', 'r') as fin:
-                                data = fin.read().splitlines(True)
-                            with open('data/level.txt', 'w') as fout:
-                                fout.writelines(data[1:])
-                        spam_process = start_spam()
                 else:
                     content = m['content']
                     if 'The pokémon is ' in content:
-                        solution = solve(content)
-                        if len(solution) == 0:
+                        if len(solve(content)) == 0:
                             log('Pokemon not found.')
                         else:
-                            for i in range(0,len(solution)):
+                            for i in range(0,len(solve(content))):
                                 time.sleep(2)
-                                bot.sendMessage(channel_id, 'p!c ' + solution[i])
+                                bot.sendMessage(channel_id, 'p!c ' + solve(content)[i])
                         spam_process = start_spam()
 
                     elif 'Congratulations' in content:
+                        global shiny
+                        global legendary
+                        global num_pokemon
+                        global mythical
                         num_pokemon += 1
                         split = content.split(' ')
                         pokemon = split[7].replace('!','')
-                        show_count = f'Shiny: {num_shiny} | Legendary: {num_legendary} | Mythical: {num_mythical}'
+                        show_count = f'Shiny: {shiny} | Legendary: {legendary} | Mythical: {mythical}'
                         if 'These colors seem unusual...' in content:
-                            num_shiny += 1
+                            shiny += 1
                             log(f'A shiny Pokémon was caught! Pokémon: {pokemon}')
                             print(f"{show_count}")
                         elif re.findall('^'+pokemon+'$', legendary_list, re.MULTILINE):
-                            num_legendary += 1
+                            legendary += 1
                             print(f"{show_count}")
                             log(f'A legendary Pokémon was caught! Pokémon: {pokemon}')
                         elif re.findall('^'+pokemon+'$', mythical_list, re.MULTILINE):
-                            num_mythical += 1
+                            mythical += 1
                             log(f'A mythical Pokémon was caught! Pokémon: {pokemon}')
                             print(f"{show_count}")
                         else:
