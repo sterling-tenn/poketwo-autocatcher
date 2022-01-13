@@ -76,12 +76,12 @@ def on_message(resp):
             if m['author']['id'] == poketwo_id:
                 if m['embeds']:
                     embed_title = m['embeds'][0]['title']
-                    embed_content = m['embeds'][0]['description']
-                    if 'pokémon has appeared!' in embed_title:
+                    if 'A wild pokémon has appeared!' in embed_title:
                         stop(spam_process)
                         time.sleep(2)
                         bot.sendMessage(channel_id, 'p!h')
-                    elif 'is now level' in embed_content:
+                    embed_content = m['embeds'][0]['description']
+                    if 'is now level' in embed_content:
                         stop(spam_process)
                         split = embed_content.split(' ')
                         if '"' in embed_content:
@@ -111,19 +111,19 @@ def on_message(resp):
                         num_pokemon += 1
                         split = content.split(' ')
                         pokemon = split[7].replace('!','')
-                        show_count = print(f'Shiny: {num_shiny} | Legendary: {num_legendary} | Mythical: {num_mythical}')
+                        show_count = f'Shiny: {num_shiny} | Legendary: {num_legendary} | Mythical: {num_mythical}'
                         if 'These colors seem unusual...' in content:
                             num_shiny += 1
                             log(f'A shiny Pokémon was caught! Pokémon: {pokemon}')
-                            show_count()
+                            print(f"{show_count}")
                         elif re.findall('^'+pokemon+'$', legendary_list, re.MULTILINE):
                             num_legendary += 1
-                            show_count()
+                            print(f"{show_count}")
                             log(f'A legendary Pokémon was caught! Pokémon: {pokemon}')
                         elif re.findall('^'+pokemon+'$', mythical_list, re.MULTILINE):
                             num_mythical += 1
                             log(f'A mythical Pokémon was caught! Pokémon: {pokemon}')
-                            show_count()
+                            print(f"{show_count}")
                         else:
                             print(f'Total Pokémon Caught: {num_pokemon}')
                         
