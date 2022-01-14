@@ -70,7 +70,11 @@ def on_message(resp):
             if m['author']['id'] == poketwo_id:
                 if m['embeds']:
                     embed_title = m['embeds'][0]['title']
-                    if "Congratulations" in embed_title:
+                    if 'wild pokémon has appeared!' in embed_title:
+                        stop(spam_process)
+                        time.sleep(2)
+                        bot.sendMessage(channel_id, 'p!h')
+                    elif "Congratulations" in embed_title:
                         embed_content = m['embeds'][0]['description']
                         if 'now level' in embed_content:
                             stop(spam_process)
@@ -86,10 +90,6 @@ def on_message(resp):
                                 spam_process = start_spam()
                             else:
                                 spam_process = start_spam()
-                    elif 'wild pokémon has appeared!' in embed_title:
-                        stop(spam_process)
-                        time.sleep(2)
-                        bot.sendMessage(channel_id, 'p!h')
                 else:
                     content = m['content']
                     if 'The pokémon is ' in content:
@@ -109,19 +109,18 @@ def on_message(resp):
                         num_pokemon += 1
                         split = content.split(' ')
                         pokemon = split[7].replace('!','')
-                        show_count = f'Shiny: {shiny} | Legendary: {legendary} | Mythical: {mythical}'
                         if 'These colors seem unusual...' in content:
                             shiny += 1
                             log(f'A shiny Pokémon was caught! Pokémon: {pokemon}')
-                            print(f"{show_count}")
+                            log(f'Shiny: {shiny} | Legendary: {legendary} | Mythical: {mythical}')
                         elif re.findall('^'+pokemon+'$', legendary_list, re.MULTILINE):
                             legendary += 1
-                            print(f"{show_count}")
                             log(f'A legendary Pokémon was caught! Pokémon: {pokemon}')
+                            log(f'Shiny: {shiny} | Legendary: {legendary} | Mythical: {mythical}')
                         elif re.findall('^'+pokemon+'$', mythical_list, re.MULTILINE):
                             mythical += 1
                             log(f'A mythical Pokémon was caught! Pokémon: {pokemon}')
-                            print(f"{show_count}")
+                            log(f'Shiny: {shiny} | Legendary: {legendary} | Mythical: {mythical}')
                         else:
                             print(f'Total Pokémon Caught: {num_pokemon}')
                         
