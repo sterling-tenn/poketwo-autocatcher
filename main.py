@@ -1,8 +1,6 @@
 import discum, re, time, multiprocessing, json, datetime, random, flask
 
 version = 'v2.6'
-import keep_alive
-keep_alive.keep_alive()
 
 with open('data/config.json','r') as file:
     info = json.loads(file.read())
@@ -37,7 +35,6 @@ def solve(message):
     hint_replaced = hint_string.replace('_', '.')
     solution = re.findall('^'+hint_replaced+'$', pokemon_list, re.MULTILINE)
     return solution
-
 
 def spam():
   while True:
