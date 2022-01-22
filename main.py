@@ -42,7 +42,7 @@ def spam():
     bot.sendMessage(channel_id,num)
     intervals = [1, 1.1, 1.2, 1.3, 1.4]
     time.sleep(random.choice(intervals))
-            
+
 def start_spam():
     new_process = multiprocessing.Process(target=spam)
     new_process.start()
@@ -125,7 +125,7 @@ def on_message(resp):
                             log(f'Shiny: {shiny} | Legendary: {legendary} | Mythical: {mythical}')
                         else:
                             print(f'Total Pokémon Caught: {num_pokemon}')
-                        
+
                     elif 'human' in content:
                         stop(spam_process)
                         log('Captcha detected; autocatcher paused. Press enter to restart.')
