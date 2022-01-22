@@ -73,7 +73,8 @@ def on_message(resp):
                     embed_title = m['embeds'][0]['title']
                     if 'wild pokémon has appeared!' in embed_title:
                         stop(spam_process)
-                        time.sleep(2)
+                        intervals = [2.1, 2.2, 2.3, 2.4, 2.5]
+                        time.sleep(random.choice(intervals))
                         bot.sendMessage(channel_id, 'p!h')
                     elif "Congratulations" in embed_title:
                         embed_content = m['embeds'][0]['description']
@@ -98,7 +99,9 @@ def on_message(resp):
                             log('Pokemon not found.')
                         else:
                             for i in range(0, len(solve(content))):
-                                time.sleep(2)
+                                stop(spam_process)
+                                intervals = [2.1, 2.2, 2.3, 2.4, 2.5]
+                                time.sleep(random.choice(intervals))
                                 bot.sendMessage(channel_id, 'p!c ' + solve(content)[i])
                         spam_process = start_spam()
 
