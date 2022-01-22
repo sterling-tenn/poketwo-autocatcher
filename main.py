@@ -1,4 +1,4 @@
-import discum, re, time, multiprocessing, json, datetime, random, flask
+import discum, re, time, multiprocessing, json, datetime, random, string
 
 version = 'v2.6'
 
@@ -38,9 +38,9 @@ def solve(message):
 
 def spam():
   while True:
-    num = random.randint(1, 10000000000000000000)
+    num = str(''.join(random.choices(string.ascii_uppercase, k=random.randint(1, 15))))
     bot.sendMessage(channel_id,num)
-    intervals = [1, 1.1, 1.2, 1.3, 1.4]
+    intervals = [1.1, 1.2, 1.3, 1.4, 1.5]
     time.sleep(random.choice(intervals))
 
 def start_spam():
