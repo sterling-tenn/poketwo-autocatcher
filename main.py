@@ -26,14 +26,13 @@ bot = discum.Client(token=user_token, log=False)
 
 def solve(message):
     hint = []
-    for i in range(15,len(message) - 1):
+    for i in range(15, len(message) - 1):
         if message[i] != '\\':
             hint.append(message[i])
     hint_string = ''
     for i in hint:
         hint_string += i
-    hint_replaced = hint_string.replace('_', '.')
-    solution = re.findall('^'+hint_replaced+'$', pokemon_list, re.MULTILINE)
+    solution = re.findall('^'+hint_string.replace('_', '.')+'$', pokemon_list, re.MULTILINE)
     return solution
 
 def spam():
@@ -73,8 +72,7 @@ def on_message(resp):
                     embed_title = m['embeds'][0]['title']
                     if 'wild pokémon has appeared!' in embed_title:
                         stop(spam_process)
-                        intervals = [2.1, 2.2, 2.3, 2.4, 2.5]
-                        time.sleep(random.choice(intervals))
+                        time.sleep(2)
                         bot.sendMessage(channel_id, 'p!h')
                     elif "Congratulations" in embed_title:
                         embed_content = m['embeds'][0]['description']
@@ -98,11 +96,10 @@ def on_message(resp):
                         if len(solve(content)) == 0:
                             log('Pokemon not found.')
                         else:
-                            for i in range(0, len(solve(content))):
+                            for i in solve(content):
                                 stop(spam_process)
-                                intervals = [2.1, 2.2, 2.3, 2.4, 2.5]
-                                time.sleep(random.choice(intervals))
-                                bot.sendMessage(channel_id, 'p!c ' + solve(content)[i])
+                                time.sleep(2)
+                                bot.sendMessage(channel_id, f'p!c {i}')
                         spam_process = start_spam()
 
                     elif 'Congratulations' in content:
@@ -130,7 +127,7 @@ def on_message(resp):
 
                     elif 'human' in content:
                         stop(spam_process)
-                        log('Captcha detected; autocatcher paused. Press enter to restart.')
+                        log('Captcha Detected; Autocatcher Paused. Press enter to restart.')
                         input()
                         bot.sendMessage(channel_id, 'p!h')
 
