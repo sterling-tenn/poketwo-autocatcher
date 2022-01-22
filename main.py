@@ -1,4 +1,4 @@
-import discum, re, time, multiprocessing, json, datetime, random, string
+import discum, re, time, multiprocessing, json, datetime, random
 
 version = 'v2.6'
 
@@ -38,8 +38,8 @@ def solve(message):
 
 def spam():
   while True:
-    num = str(''.join(random.choices(string.ascii_uppercase, k=random.randint(1, 15))))
-    bot.sendMessage(channel_id,num)
+    num = random.randint(1, 1000000000000)
+    bot.sendMessage(channel_id, num)
     intervals = [1.1, 1.2, 1.3, 1.4, 1.5]
     time.sleep(random.choice(intervals))
 
@@ -65,7 +65,6 @@ def on_ready(resp):
 @bot.gateway.command
 def on_message(resp):
     global spam_process
-
     if resp.event.message:
         m = resp.parsed.auto()
         if m['channel_id'] == channel_id:
@@ -74,7 +73,6 @@ def on_message(resp):
                     embed_title = m['embeds'][0]['title']
                     if 'wild pokémon has appeared!' in embed_title:
                         stop(spam_process)
-                        time.sleep(2)
                         bot.sendMessage(channel_id, 'p!h')
                     elif "Congratulations" in embed_title:
                         embed_content = m['embeds'][0]['description']
@@ -99,7 +97,6 @@ def on_message(resp):
                             log('Pokemon not found.')
                         else:
                             for i in range(0,len(solve(content))):
-                                time.sleep(2)
                                 bot.sendMessage(channel_id, 'p!c ' + solve(content)[i])
                         spam_process = start_spam()
 
