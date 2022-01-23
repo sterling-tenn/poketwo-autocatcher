@@ -1,4 +1,4 @@
-import discum, re, time, multiprocessing, json, datetime, random, string
+import discum, re, time, multiprocessing, json, datetime, random
 
 version = 'v2.6'
 
@@ -38,8 +38,7 @@ def solve(message):
 
 def spam():
   while True:
-    msg = str(''.join(random.choices(string.ascii_uppercase, k=random.randint(1, 15))))
-    bot.sendMessage(channel, msg)
+    bot.sendMessage(channel, random.randint(1, 100000000000))
     time.sleep(2)
 
 def _spam():
