@@ -1,11 +1,11 @@
-import discum, re, time, multiprocessing, json, datetime, random
+import discum, re, time, multiprocessing, json, datetime, random, string
 
 version = 'v2.6'
 
 with open('data/config.json','r') as file:
     info = json.loads(file.read())
     user_token = info['user_token']
-    channel_id = info['channel_id']
+    channel = info['channel_id']
 
 with open('data/pokemon.txt', 'r', encoding='utf8') as file:
     pokemon_list = file.read()
@@ -21,28 +21,28 @@ shiny = 0
 legendary = 0
 mythical = 0
 
-poketwo_id = '716390085896962058'
+poketwo = '716390085896962058'
 bot = discum.Client(token=user_token, log=False)
 
 def solve(message):
     hint = []
-    for i in range(15, len(message) - 1):
+    for i in range(15,len(message) - 1):
         if message[i] != '\\':
             hint.append(message[i])
     hint_string = ''
     for i in hint:
         hint_string += i
-    solution = re.findall('^'+hint_string.replace('_', '.')+'$', pokemon_list, re.MULTILINE)
+    hint_replaced = hint_string.replace('_', '.')
+    solution = re.findall('^'+hint_replaced+'$', pokemon_list, re.MULTILINE)
     return solution
 
 def spam():
   while True:
-    num = random.randint(1, 1000000000000)
-    bot.sendMessage(channel_id, num)
-    intervals = [1.1, 1.2, 1.3, 1.4, 1.5]
-    time.sleep(random.choice(intervals))
+    msg = str(''.join(random.choices(string.ascii_uppercase, k=random.randint(1, 15))))
+    bot.sendMessage(channel, msg)
+    time.sleep(2)
 
-def start_spam():
+def _spam():
     new_process = multiprocessing.Process(target=spam)
     new_process.start()
     return new_process
@@ -50,10 +50,10 @@ def start_spam():
 def stop(process):
     process.terminate()
 
-def log(string):
+def log(str):
     now = datetime.datetime.now()
     current_time = now.strftime('%H:%M:%S')
-    print(f'[{current_time}]', string)
+    print(f'[{current_time}]', str)
 
 @bot.gateway.command
 def on_ready(resp):
@@ -63,33 +63,34 @@ def on_ready(resp):
 
 @bot.gateway.command
 def on_message(resp):
-    global spam_process
+    global spamming
+
     if resp.event.message:
         m = resp.parsed.auto()
-        if m['channel_id'] == channel_id:
-            if m['author']['id'] == poketwo_id:
+        if m['channel_id'] == channel:
+            if m['author']['id'] == poketwo:
                 if m['embeds']:
                     embed_title = m['embeds'][0]['title']
                     if 'wild pokémon has appeared!' in embed_title:
-                        stop(spam_process)
+                        stop(spamming)
                         time.sleep(2)
-                        bot.sendMessage(channel_id, 'p!h')
+                        bot.sendMessage(channel, 'p!h')
                     elif "Congratulations" in embed_title:
                         embed_content = m['embeds'][0]['description']
                         if 'now level' in embed_content:
-                            stop(spam_process)
+                            stop(spamming)
                             split = embed_content.split(' ')
                             a = embed_content.count(' ')
                             level = int(split[a].replace('!', ''))
                             if level == 100:
-                                bot.sendMessage(channel_id, f"p!s {to_level}")
+                                bot.sendMessage(channel, f"p!s {to_level}")
                                 with open('data/level.txt', 'r') as fi:
                                     data = fi.read().splitlines(True)
                                 with open('data/level.txt', 'w') as fo:
                                     fo.writelines(data[1:])
-                                spam_process = start_spam()
+                                spamming = _spam()
                             else:
-                                spam_process = start_spam()
+                                spamming = _spam()
                 else:
                     content = m['content']
                     if 'The pokémon is ' in content:
@@ -97,10 +98,9 @@ def on_message(resp):
                             log('Pokemon not found.')
                         else:
                             for i in solve(content):
-                                stop(spam_process)
                                 time.sleep(2)
-                                bot.sendMessage(channel_id, f'p!c {i}')
-                        spam_process = start_spam()
+                                bot.sendMessage(channel, f'p!c {i}')
+                        spamming = _spam()
 
                     elif 'Congratulations' in content:
                         global shiny
@@ -126,12 +126,12 @@ def on_message(resp):
                             print(f'Total Pokémon Caught: {num_pokemon}')
 
                     elif 'human' in content:
-                        stop(spam_process)
-                        log('Captcha Detected; Autocatcher Paused. Press enter to restart.')
+                        stop(spamming)
+                        log('Captcha detected; autocatcher paused. Press enter to restart.')
                         input()
-                        bot.sendMessage(channel_id, 'p!h')
+                        bot.sendMessage(channel, 'p!h')
 
 if __name__ == '__main__':
     print(f'Pokétwo Autocatcher {version}\nA FOSS Pokétwo autocatcher\nEvent Log:')
-    spam_process = start_spam()
+    spamming = _spam()
     bot.gateway.run(auto_reconnect=True)
