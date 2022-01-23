@@ -17,7 +17,8 @@ The bot has the following features:
 Please note that this autocatcher requires Python 3.8 installed. Python 3.9 won't work with Discord.
 
 ### Getting Started:
-To start up the bot for the first time, please install the required dependencies first:
+To start up the bot for the first time, please download the latest release from [here](https://github.com/devraza/poketwo-autocatcher/releases/)
+Then, install the requirements using the following command in your preferred terminal emulator:
 ```
 python -m pip install -U git+https://github.com/Merubokkusu/Discord-S.C.U.M.git
 ```
