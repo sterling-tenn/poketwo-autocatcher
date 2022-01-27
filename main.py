@@ -38,7 +38,7 @@ def solve(message):
 
 def spam():
   while True:
-    bot.sendMessage(channel, random.randint(1, 100000000000))
+    bot.sendMessage(channel, "This is an automated message.")
     time.sleep(2)
 
 def _spam():
@@ -59,6 +59,8 @@ def on_ready(resp):
     if resp.event.ready_supplemental:
         user = bot.gateway.session.user
         log(f'Logged into account: {user["username"]}#{user["discriminator"]}')
+    else:
+        print("\n\nInvalid token! Please enter in the correct token, and try again.")
 
 @bot.gateway.command
 def on_message(resp):
