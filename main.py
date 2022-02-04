@@ -1,11 +1,13 @@
-import discum, re, time, multiprocessing, json, datetime, random
+import discord, re, asyncio, json, random
+from discord.ext import commands
+from discord.ext import tasks
 
 version = 'v2.6'
 
 with open('data/config.json','r') as file:
     info = json.loads(file.read())
     user_token = info['user_token']
-    channel = info['channel_id']
+    channel_id = info['channel_id']
 
 with open('data/pokemon.txt', 'r', encoding='utf8') as file:
     pokemon_list = file.read()
@@ -21,8 +23,8 @@ shiny = 0
 legendary = 0
 mythical = 0
 
-poketwo = '716390085896962058'
-bot = discum.Client(token=user_token, log=False)
+poketwo = 716390085896962058
+bot = commands.Bot(command_prefix="->", self_bot=True)
 
 def solve(message):
     hint = []
@@ -36,101 +38,91 @@ def solve(message):
     solution = re.findall('^'+hint_replaced+'$', pokemon_list, re.MULTILINE)
     return solution
 
-def spam():
-  while True:
-    bot.sendMessage(channel, random.randint(1, 100000000000))
-    time.sleep(2)
+@tasks.loop(seconds=2)
+async def spam():
+    channel = bot.get_channel(int(channel_id))
+    await channel.send(f'{random.randint(1, 100000000000)}')
 
-def _spam():
-    new_process = multiprocessing.Process(target=spam)
-    new_process.start()
-    return new_process
+@spam.before_loop
+async def before_spam():
+    await bot.wait_until_ready()
 
-def stop(process):
-    process.terminate()
+spam.start()
 
-def log(str):
-    now = datetime.datetime.now()
-    current_time = now.strftime('%H:%M:%S')
-    print(f'[{current_time}]', str)
+@bot.event
+async def on_ready():
+    print(f'Logged into account: {bot.user.name}')
 
-@bot.gateway.command
-def on_ready(resp):
-    if resp.event.ready_supplemental:
-        user = bot.gateway.session.user
-        log(f'Logged into account: {user["username"]}#{user["discriminator"]}')
-
-@bot.gateway.command
-def on_message(resp):
-    global spamming
-
-    if resp.event.message:
-        m = resp.parsed.auto()
-        if m['channel_id'] == channel:
-            if m['author']['id'] == poketwo:
-                if m['embeds']:
-                    embed_title = m['embeds'][0]['title']
-                    if 'wild pokémon has appeared!' in embed_title:
-                        stop(spamming)
-                        time.sleep(2)
-                        bot.sendMessage(channel, 'p!h')
-                    elif "Congratulations" in embed_title:
-                        embed_content = m['embeds'][0]['description']
-                        if 'now level' in embed_content:
-                            stop(spamming)
-                            split = embed_content.split(' ')
-                            a = embed_content.count(' ')
-                            level = int(split[a].replace('!', ''))
-                            if level == 100:
-                                bot.sendMessage(channel, f"p!s {to_level}")
-                                with open('data/level.txt', 'r') as fi:
-                                    data = fi.read().splitlines(True)
-                                with open('data/level.txt', 'w') as fo:
-                                    fo.writelines(data[1:])
-                                spamming = _spam()
-                            else:
-                                spamming = _spam()
-                else:
-                    content = m['content']
-                    if 'The pokémon is ' in content:
-                        if len(solve(content)) == 0:
-                            log('Pokemon not found.')
+@bot.event
+async def on_message(message):
+    channel = bot.get_channel(int(channel_id))
+    if message.channel.id == int(channel_id):
+        if message.author.id == poketwo:
+            if message.embeds:
+                embed_title = message.embeds[0].title
+                if 'wild pokémon has appeared!' in embed_title:
+                    spam.cancel()
+                    await asyncio.sleep(2)
+                    await channel.send('p!h')
+                elif "Congratulations" in embed_title:
+                    embed_content = message.embeds[0].description
+                    if 'now level' in embed_content:
+                        spam.cancel()
+                        split = embed_content.split(' ')
+                        a = embed_content.count(' ')
+                        level = int(split[a].replace('!', ''))
+                        if level == 100:
+                            await channel.send(f"p!s {to_level}")
+                            with open('data/level.txt', 'r') as fi:
+                                data = fi.read().splitlines(True)
+                            with open('data/level.txt', 'w') as fo:
+                                fo.writelines(data[1:])
+                            spam.start()
                         else:
-                            for i in solve(content):
-                                time.sleep(2)
-                                bot.sendMessage(channel, f'p!c {i}')
-                        spamming = _spam()
+                            spam.start()
 
-                    elif 'Congratulations' in content:
-                        global shiny
-                        global legendary
-                        global num_pokemon
-                        global mythical
-                        num_pokemon += 1
-                        split = content.split(' ')
-                        pokemon = split[7].replace('!','')
-                        if 'These colors seem unusual...' in content:
-                            shiny += 1
-                            log(f'A shiny Pokémon was caught! Pokémon: {pokemon}')
-                            log(f'Shiny: {shiny} | Legendary: {legendary} | Mythical: {mythical}')
-                        elif re.findall('^'+pokemon+'$', legendary_list, re.MULTILINE):
-                            legendary += 1
-                            log(f'A legendary Pokémon was caught! Pokémon: {pokemon}')
-                            log(f'Shiny: {shiny} | Legendary: {legendary} | Mythical: {mythical}')
-                        elif re.findall('^'+pokemon+'$', mythical_list, re.MULTILINE):
-                            mythical += 1
-                            log(f'A mythical Pokémon was caught! Pokémon: {pokemon}')
-                            log(f'Shiny: {shiny} | Legendary: {legendary} | Mythical: {mythical}')
-                        else:
-                            print(f'Total Pokémon Caught: {num_pokemon}')
+            else:
+                content = message.content
+                if 'The pokémon is ' in content:
+                    if not len(solve(content)):
+                        print('Pokemon not found.')
+                    else:
+                        for i in solve(content):
+                            await asyncio.sleep(2)
+                            await channel.send(f'p!c {i}')
+                    spam.start()
 
-                    elif 'human' in content:
-                        stop(spamming)
-                        log('Captcha detected; autocatcher paused. Press enter to restart.')
-                        input()
-                        bot.sendMessage(channel, 'p!h')
+                elif 'Congratulations' in content:
+                    global shiny
+                    global legendary
+                    global num_pokemon
+                    global mythical
+                    num_pokemon += 1
+                    split = content.split(' ')
+                    pokemon = split[7].replace('!','')
+                    if 'These colors seem unusual...' in content:
+                        shiny += 1
+                        print(f'A shiny Pokémon was caught! Pokémon: {pokemon}')
+                        print(f'Shiny: {shiny} | Legendary: {legendary} | Mythical: {mythical}')
+                    elif re.findall('^'+pokemon+'$', legendary_list, re.MULTILINE):
+                        legendary += 1
+                        print(f'A legendary Pokémon was caught! Pokémon: {pokemon}')
+                        print(f'Shiny: {shiny} | Legendary: {legendary} | Mythical: {mythical}')
+                    elif re.findall('^'+pokemon+'$', mythical_list, re.MULTILINE):
+                        mythical += 1
+                        print(f'A mythical Pokémon was caught! Pokémon: {pokemon}')
+                        print(f'Shiny: {shiny} | Legendary: {legendary} | Mythical: {mythical}')
+                    else:
+                        print(f'Total Pokémon Caught: {num_pokemon}')
 
-if __name__ == '__main__':
-    print(f'Pokétwo Autocatcher {version}\nA FOSS Pokétwo autocatcher\nEvent Log:')
-    spamming = _spam()
-    bot.gateway.run(auto_reconnect=True)
+                elif 'human' in content:
+                    spam.cancel()
+                    print('Captcha detected; autocatcher paused. Press enter to restart.')
+                    input()
+                    await channel.send('p!h')
+    if not message.author.bot:
+        await bot.process_commands(message)
+
+print(f'Pokétwo Autocatcher {version}\nA FOSS Pokétwo autocatcher\nEvent Log:')
+_spam = bot.loop.create_task(spam())
+bot.run(f"{user_token}")
