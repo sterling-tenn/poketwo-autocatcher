@@ -124,5 +124,4 @@ async def on_message(message):
         await bot.process_commands(message)
 
 print(f'Pokétwo Autocatcher {version}\nA FOSS Pokétwo autocatcher\nEvent Log:')
-_spam = bot.loop.create_task(spam())
 bot.run(f"{user_token}")
