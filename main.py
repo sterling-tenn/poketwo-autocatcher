@@ -2,7 +2,7 @@ import discord, re, asyncio, json, random
 from discord.ext import commands
 from discord.ext import tasks
 
-version = 'v2.6'
+version = 'v2.7'
 
 with open('data/config.json','r') as file:
     info = json.loads(file.read())
