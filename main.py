@@ -38,7 +38,7 @@ def solve(message):
     solution = re.findall('^'+hint_replaced+'$', pokemon_list, re.MULTILINE)
     return solution
 
-@tasks.loop(seconds=1)
+@tasks.loop(seconds=1.5)
 async def spam():
     channel = bot.get_channel(int(channel_id))
     await channel.send(f'{random.randint(1, 100000000000)}')
