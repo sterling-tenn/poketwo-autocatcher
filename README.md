@@ -11,13 +11,15 @@ The bot has the following features:
     - See when a Shiny/Legendary/Ultra Beast/Mythical Pokémon is caught, and which one it is!
 - 💲 **Completely free** and open-source (you can see the code as it is currently)
 - 💕 **Trustworthy**; this autocatcher is **completely** open-source (meaning you can see the latest code)
-- 📜 Support for all Pokémon from generation I to generation VIII, including Alolan and Galarian Pokémon
+- 📜 Support for all Pokémon from generation I to generation VIII, including all Alolan and Galarian Pokémon
+- 🏎️ Super fast; the autocatcher can even handle Incense!
+- 🔍 Pokétwo-Resistant - the autocatcher sends a random series of numbers to enhance undetectability
 
 ### Requirements
 Please note that this autocatcher requires Python 3.8 installed. Python 3.9 won't work with Discord.
 
 ### Getting Started:
-To start up the bot for the first time, please download the latest release from [here](https://github.com/devraza/poketwo-autocatcher/releases/)
+To start up the bot for the first time, please download the latest release from [here](https://github.com/devraza/catcher-one/releases/)
 Then, install the requirements using the following command in your preferred terminal emulator:
 ```
 python -m pip install -U discord.py-self
