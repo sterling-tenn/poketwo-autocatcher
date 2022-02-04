@@ -62,7 +62,7 @@ async def on_message(message):
                 embed_title = message.embeds[0].title
                 if 'wild pokémon has appeared!' in embed_title:
                     spam.cancel()
-                    await asyncio.sleep(1)
+                    await asyncio.sleep(1.5)
                     await channel.send('p!h')
                 elif "Congratulations" in embed_title:
                     embed_content = message.embeds[0].description
@@ -88,7 +88,7 @@ async def on_message(message):
                         print('Pokemon not found.')
                     else:
                         for i in solve(content):
-                            await asyncio.sleep(1)
+                            await asyncio.sleep(1.5)
                             await channel.send(f'p!c {i}')
                     spam.start()
 
