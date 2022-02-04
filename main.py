@@ -90,6 +90,7 @@ async def on_message(message):
                         for i in solve(content):
                             await asyncio.sleep(2)
                             await channel.send(f'p!c {i}')
+                    spam.start()
 
                 elif 'Congratulations' in content:
                     global shiny
