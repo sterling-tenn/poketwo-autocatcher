@@ -1,4 +1,4 @@
-import discord, re, asyncio, json, random
+import re, asyncio, json, random
 from discord.ext import commands
 from discord.ext import tasks
 
@@ -25,6 +25,7 @@ mythical = 0
 
 poketwo = 716390085896962058
 bot = commands.Bot(command_prefix="->", self_bot=True)
+intervals = [1.5, 1.6, 1.7, 1.8, 1.9]
 
 def solve(message):
     hint = []
@@ -38,7 +39,7 @@ def solve(message):
     solution = re.findall('^'+hint_replaced+'$', pokemon_list, re.MULTILINE)
     return solution
 
-@tasks.loop(seconds=1.5)
+@tasks.loop(seconds=random.choice(intervals))
 async def spam():
     channel = bot.get_channel(int(channel_id))
     await channel.send(f'{random.randint(1, 100000000000)}')
