@@ -1,8 +1,8 @@
-import re, asyncio, json, random
+import re, asyncio, json, random, string
 from discord.ext import commands
 from discord.ext import tasks
 
-version = 'v2.7'
+version = 'v2.7.1'
 
 with open('data/config.json','r') as file:
     info = json.loads(file.read())
@@ -42,7 +42,7 @@ def solve(message):
 @tasks.loop(seconds=random.choice(intervals))
 async def spam():
     channel = bot.get_channel(int(channel_id))
-    await channel.send(f'{random.randint(1, 100000000000)}')
+    await channel.send(f'{random.choices(string.ascii_uppercase + string.digits + string.ascii_lowercase, k=random.choice([7, 8, 9, 10]))}')
 
 @spam.before_loop
 async def before_spam():
@@ -101,28 +101,28 @@ async def on_message(message):
                     num_pokemon += 1
                     split = content.split(' ')
                     pokemon = split[7].replace('!','')
-                    if 'These colors seem unusual...' in content:
+                    if 'seem unusual...' in content:
                         shiny += 1
-                        print(f'A shiny Pokémon was caught! Pokémon: {pokemon}')
+                        print(f'Shiny Pokémon caught! Pokémon: {pokemon}')
                         print(f'Shiny: {shiny} | Legendary: {legendary} | Mythical: {mythical}')
                     elif re.findall('^'+pokemon+'$', legendary_list, re.MULTILINE):
                         legendary += 1
-                        print(f'A legendary Pokémon was caught! Pokémon: {pokemon}')
+                        print(f'Legendary Pokémon caught! Pokémon: {pokemon}')
                         print(f'Shiny: {shiny} | Legendary: {legendary} | Mythical: {mythical}')
                     elif re.findall('^'+pokemon+'$', mythical_list, re.MULTILINE):
                         mythical += 1
-                        print(f'A mythical Pokémon was caught! Pokémon: {pokemon}')
+                        print(f'Mythical Pokémon caught! Pokémon: {pokemon}')
                         print(f'Shiny: {shiny} | Legendary: {legendary} | Mythical: {mythical}')
                     else:
                         print(f'Total Pokémon Caught: {num_pokemon}')
 
                 elif 'human' in content:
                     spam.cancel()
-                    print('Captcha detected; autocatcher paused. Press enter to restart.')
+                    print('Captcha detected; autocatcher paused. Press enter to restart, after solving captcha manually.')
                     input()
                     await channel.send('p!h')
     if not message.author.bot:
         await bot.process_commands(message)
 
-print(f'Pokétwo Autocatcher {version}\nA FOSS Pokétwo autocatcher\nEvent Log:')
+print(f'Pokétwo Autocatcher {version}\nA completely free and open-source Pokétwo autocatcher\nEvent Log:')
 bot.run(f"{user_token}")
