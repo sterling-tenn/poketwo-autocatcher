@@ -124,5 +124,5 @@ async def on_message(message):
     if not message.author.bot:
         await bot.process_commands(message)
 
-print(f'Pokétwo Autocatcher {version}\nA completely free and open-source Pokétwo autocatcher\nEvent Log:')
+print(f'Pokétwo Autocatcher {version}\nA second gen free and open-source Pokétwo autocatcher by devraza\nEvent Log:')
 bot.run(f"{user_token}")
