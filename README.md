@@ -3,7 +3,7 @@ A second generation **free** and open-source Pokétwo autocatcher, created with 
 
 ---
 
-**For a version of this autocatcher that works with repl.it, please see the replit branch [here](https://github.com/devraza/catchtwo/tree/replit)**
+**For a version of this autocatcher that works easily with repl.it, please see the replit branch [here](https://github.com/devraza/catchtwo/tree/replit)**.
 
 ### Features
 The bot has the following features:
@@ -20,40 +20,27 @@ The bot has the following features:
 ### Requirements
 Please note that this autocatcher requires Python 3.8 installed. Python 3.9 simply won't work with Discord.
 
-### Getting Started:
+#### <b>Running the bot</b>
 To start up the bot for the first time, please download the latest release from [here](https://github.com/devraza/catcher-one/releases/). <br>
-Then, install the required python packages by running the `setup.py` file in your downloaded folder, as shown below:
-```
-python3 setup.py
-```
-
-#### <b>Running</b>
-Once you have installed the correct dependencies, run the `setup.py` file and enter in the following fields when asked.
+Once you have done that, run the `setup.py` file using the command `python3 setup.py` and enter in the following fields when asked:
 
 ##### <b>user_token</b>:
-Paste in your discord account's user token. You can find instructions on this [here](https://www.youtube.com/watch?v=3W9tAEsK7RM) <br>
+Paste in your discord account's user token. You can find instructions on this [here](https://www.youtube.com/watch?v=3W9tAEsK7RM)
 
 ##### <b>channel_id</b>:
-This will allow the bot to use your preferred channel to spam as well as catch Pokétwo spawns. <br>
-Make sure you paste this carefully, as If you set it to the wrong channel it will spam and catch there. <br>
-See [here](https://www.youtube.com/watch?v=6dqYctHmazc) for help on getting this. <br>
+This will allow the bot to use your preferred channel to spam as well as catch Pokétwo spawns. Make sure you paste this carefully, as If you set it to the wrong channel it will spam and catch there. See [here](https://www.youtube.com/watch?v=6dqYctHmazc) for help on getting this.
 
-After you've done the above, simply run the following command to start up your very own Pokétwo Autocatcher.
-```
-py main.py
-```
-The command may vary depending on your operating system, so try `python3 main.py` if this doesn't work.
+After you've entered that in, the autocatcher should start successfully. (if not, check if you have entered in the right fields)
 
 > Remember to cd into your autocatcher folder as well. If you need any help with something, feel free to open a Github Issue.
 
 ### Auto-levelling
-To enable auto-levelling, just put in the ID's of the Pokémon you want to be levelled up into the `level.txt` text file.
+To enable auto-levelling, just put in the ID's of the Pokémon you want to be levelled up into the `level` file (inside the `data` folder).
 
 ---
 
 ## **DISCLAIMER**
 
-Please note that self botting is against Discord's Terms of Service and being discovered <br> 
-using a self bot may result in your account being banned. To avoid this, keep knowledge of your self bot <br> to a minimum and use a throwaway account. I am not responsible for any accounts lost due to the self bot. <br> I also recommend checking the self bot channel's messages occasionally to see if Pokétwo has sent a captcha. <br> <b>If it has, it would be a good idea to solve it.</b> <br>
+Please note that self botting is against Discord's Terms of Service and being discovered using a self bot may result in your account being banned. To avoid this, keep knowledge of your self bot to a minimum and use a throwaway account. I am not responsible for any accounts lost due to the self bot. I also recommend checking the self bot channel's messages occasionally to see if Pokétwo has sent a captcha. **If it has, it would be a good idea to solve it.**
 
 ---

@@ -13,5 +13,4 @@ with open("data/config.json", "a") as file:
     channel_id = input()
     file.write(f'   "channel_id" : "{channel_id}"\n')
     file.write("}")
-
-print("\n\nSetup completed. Please run the bot using the correct command:\nPlease see the GitHub repo for help on this. However, please try:\npython3 main.py")
+    exec(open('main.py').read())

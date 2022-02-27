@@ -2,20 +2,20 @@ import re, asyncio, json, random, string
 from discord.ext import commands
 from discord.ext import tasks
 
-version = 'v2.7.1'
+version = 'v2.7.2'
 
-with open('data/config.json','r') as file:
+with open('data/config.json', 'r') as file:
     info = json.loads(file.read())
     user_token = info['user_token']
     channel_id = info['channel_id']
 
 with open('data/pokemon', 'r', encoding='utf8') as file:
     pokemon_list = file.read()
-with open('data/legendary','r') as file:
+with open('data/legendary', 'r') as file:
     legendary_list = file.read()
-with open('data/mythical','r') as file:
+with open('data/mythical', 'r') as file:
     mythical_list = file.read()
-with open('data/level','r') as file:
+with open('data/level', 'r') as file:
     to_level = file.readline()
 
 num_pokemon = 0
