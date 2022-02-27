@@ -3,6 +3,8 @@ A second generation **free** and open-source Pokétwo autocatcher, created with 
 
 ---
 
+**For a version of this autocatcher that works with repl.it, please see the replit branch [here](https://github.com/devraza/catchtwo/tree/replit)**
+
 ### Features
 The bot has the following features:
 - ⚙️ Easy Setup (simply run a script and enter the correct information, no 'coding' needed)
