@@ -1,11 +1,11 @@
-## 🏆 Pokétwo Autocatcher 🏆
-A **free** and open-source Pokétwo autocatcher, created with the goal of preventing people from wasting their money.
+## Pokétwo Autocatcher
+A second generation **free** and open-source Pokétwo autocatcher, created with the goal of preventing people from wasting their money.
 
 ---
 
 ### Features
 The bot has the following features:
-- ⚙️ Easy Setup (simply run a script and enter the correct information, no 'programming' required)
+- ⚙️ Easy Setup (simply run a script and enter the correct information, no 'coding' needed)
 - ⬆️ Auto-levelling (Level up all your duel Pokémon to level 100 **overnight**!)
 - ✨ Get notified when and if you've caught a Pokémon, and also if another event occurs
     - See when a Shiny/Legendary/Ultra Beast/Mythical Pokémon is caught, and which one it is!
@@ -20,18 +20,10 @@ Please note that this autocatcher requires Python 3.8 installed. Python 3.9 simp
 
 ### Getting Started:
 To start up the bot for the first time, please download the latest release from [here](https://github.com/devraza/catcher-one/releases/). <br>
-Then, install the requirements using the following command in your preferred terminal emulator:
+Then, install the required python packages by running the `setup.py` file in your downloaded folder, as shown below:
 ```
-python -m pip install -U discord.py-self
+python3 setup.py
 ```
-> **If that doesn't work, try this:**
-```
-pip install -U discord.py-self
-```
-**If that still doesn't work, please see the below:**
-
-> Remember to modify the command to your installed one if necessary. <br>
-> However, this command should work in most cases.
 
 #### <b>Running</b>
 Once you have installed the correct dependencies, run the `setup.py` file and enter in the following fields when asked.
