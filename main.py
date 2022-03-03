@@ -68,19 +68,15 @@ async def on_message(message):
                 elif "Congratulations" in embed_title:
                     embed_content = message.embeds[0].description
                     if 'now level' in embed_content:
-                        spam.cancel()
                         split = embed_content.split(' ')
                         a = embed_content.count(' ')
                         level = int(split[a].replace('!', ''))
                         if level == 100:
                             await channel.send(f"p!s {to_level}")
-                            with open('data/level.txt', 'r') as fi:
+                            with open('data/level', 'r') as fi:
                                 data = fi.read().splitlines(True)
-                            with open('data/level.txt', 'w') as fo:
+                            with open('data/level', 'w') as fo:
                                 fo.writelines(data[1:])
-                            spam.start()
-                        else:
-                            spam.start()
             else:
                 content = message.content
                 if 'The pokémon is ' in content:
