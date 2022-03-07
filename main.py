@@ -2,7 +2,7 @@ import re, asyncio, json, random, string
 from discord.ext import commands
 from discord.ext import tasks
 
-version = 'v2.7.3'
+version = 'v2.7.4'
 
 with open('data/config.json', 'r') as file:
     info = json.loads(file.read())
@@ -43,7 +43,7 @@ def solve(message):
 @tasks.loop(seconds=random.choice(intervals))
 async def spam():
     channel = bot.get_channel(int(spam_id))
-    await channel.send("".join(random.choices(string.ascii_uppercase + string.ascii_lowercase, k=random.randint(10, 16))))
+    await channel.send("".join(random.choices(string.ascii_uppercase + string.ascii_lowercase, k=random.randint(12, 24))))
 
 @spam.before_loop
 async def before_spam():
@@ -63,7 +63,7 @@ async def on_message(message):
                 embed_title = message.embeds[0].title
                 if 'wild pokémon has appeared!' in embed_title:
                     spam.cancel()
-                    await asyncio.sleep(1.5)
+                    await asyncio.sleep(1)
                     await channel.send('p!h')
                 elif "Congratulations" in embed_title:
                     embed_content = message.embeds[0].description
@@ -84,10 +84,15 @@ async def on_message(message):
                         print('Pokemon not found.')
                     else:
                         for i in solve(content):
-                            await asyncio.sleep(1.5)
+                            await asyncio.sleep(1)
                             await channel.send(f'p!c {i}')
-                    await asyncio.sleep(1.5)
-                    spam.start()
+                    check = random.randint(1, 240)
+                    if check == 1:
+                      await asyncio.sleep(900)
+                      spam.start()
+                    else:
+                      await asyncio.sleep(1)
+                      spam.start()
 
                 elif 'Congratulations' in content:
                     global shiny
