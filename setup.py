@@ -14,6 +14,6 @@ with open("data/config.json", "a") as file:
     file.write(f'   "spam_id" : "{spam_id}",\n')
     print("Now, input the Channel ID of the channel for catching:")
     catch_id = input()
-    file.write(f'   "catch_id" : "{catch_id}",\n')
+    file.write(f'   "catch_id" : "{catch_id}"\n')
     file.write("}")
     exec(open('main.py').read())
