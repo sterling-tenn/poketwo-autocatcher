@@ -1,3 +1,7 @@
+# THIS PROJECT IS DEPRECATED
+
+It is now prefered that you use the `poketwo` module in [persona](https://github.com/rodofdiscord/persona). 
+
 ## **Check out the install video**
 [![Promo Video](https://img.youtube.com/vi/LP7jMe4SGfY/0.jpg)](https://www.youtube.com/watch?v=LP7jMe4SGfY)
 
