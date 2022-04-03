@@ -1,4 +1,4 @@
-# THIS PROJECT IS DEPRECATED
+# This project is deprecated
 
 It is now prefered that you use the `poketwo` module in [persona](https://github.com/rodofdiscord/persona). 
 
