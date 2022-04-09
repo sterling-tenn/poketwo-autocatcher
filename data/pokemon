@@ -249,7 +249,6 @@ Pupitar
 Tyranitar
 Lugia
 Ho-Oh
-Celebi
 Treecko
 Grovyle
 Sceptile
@@ -386,11 +385,6 @@ Latios
 Kyogre
 Groudon
 Rayquaza
-Jirachi
-Deoxys
-Attack Deoxys
-Defense Deoxys
-Speed Deoxys
 Turtwig
 Grotle
 Torterra
@@ -495,11 +489,18 @@ Heatran
 Regigigas
 Giratina
 Cresselia
+Darkrai
+Arceus
+Magearna
+Celebi
+Jirachi
+Deoxys
+Attack Deoxys
+Defense Deoxys
+Speed Deoxys
 Phione
 Manaphy
-Darkrai
 Shaymin
-Arceus
 Victini
 Snivy
 Servine
@@ -815,7 +816,6 @@ Celesteela
 Kartana
 Guzzlord
 Necrozma
-Magearna
 Marshadow
 Poipole
 Naganadel
@@ -931,93 +931,8 @@ Alolan Grimer
 Alolan Muk
 Alolan Exeggutor
 Alolan Marowak
-Grookey
-Thwackey
-Rillaboom
-Scorbunny
-Raboot
-Cinderace
-Sobble
-Drizzile
-Inteleon
-Skwovet
-Greedent
-Rookidee
-Corvisquire
-Corviknight	
-Blipbug
-Dottler
-Orbeetle
-Nickit
-Thievul
-Gossifleur
-Eldegoss
 Anniversary Wooloo
-Dubwool
-Chewtle
-Drednaw
-Yamper
-Boltund
-Rolycoly
-Carkol
-Coalossal
-Applin
-Flapple
-Appletun
-Silicobra
-Sandaconda
-Cramorant
-Arrokuda
-Barraskewda
-Toxel
-Toxtricity
-Sizzlipede
-Centiskorch
-Clobbopus
-Grapploct
-Sinistea
-Polteageist
-Hatenna
-Hattrem
-Hatterene
-Impidimp
-Morgrem
-Grimmsnarl
-Obstagoon
-Perrserker
-Cursola
 Sirfetch'd
-Mr. Rime
-Runerigus
-Milcery
-Alcremie
-Falinks
-Pincurchin
-Snom
-Eiscue
-Indeedee
-Morpeko
-Cufant
-Copperajah
-Dracozolt
-Arctozolt
-Dracovish
-Arctovish
-Duraludon
-Dreepy
-Drakloak
-Dragapult
-Zacian
-Zamazenta
-Eternatus
-Kubfu
-Urshifu
-Zarude
-Regieleki	
-Regidrago
-Glastrier
-Spectrier
-Calyrex
 Galarian Zigzagoon
 Galarian Linoone
 Galarian Meowth
@@ -1028,10 +943,20 @@ Galarian Weezing
 Galarian Yamask
 Galarian Ponyta
 Galarian Rapidash
-Galarian Mr. Mime 
+Galarian Mr. Mime
 Galarian Darumaka
-Galarian Darmanitan 
+Galarian Darmanitan
 Galarian Moltres
-Galarian Articuno 
+Galarian Articuno
 Galarian Zapdos
 Galarian Slowpoke
+Snowflake Bronzor
+Choco Sinistea
+Crystal Larvesta
+Snowy Amaura
+Spikey Cyndaquil
+Elsa Galarian Ponyta
+Snowman Pikachu
+Winter Sawsbuck
+Snowy Slowpoke
+Primal Glastrier
